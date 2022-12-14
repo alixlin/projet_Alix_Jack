@@ -5,9 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
-import { HomeComponent } from './header/home/home.component';
+import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
-import { ListeComponent } from './header/liste/liste.component';
+import { ListeComponent } from './liste/liste.component';
+import { ContactFormComponent } from './contact-form/contact-form.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ListeComponent } from './header/liste/liste.component';
     HeaderComponent,
     HomeComponent,
     FooterComponent,
-    ListeComponent
+    ListeComponent,
+    ContactFormComponent
   ],
   imports: [
     BrowserModule,
