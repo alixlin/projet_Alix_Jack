@@ -10,6 +10,8 @@ import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
 import { ListeComponent } from './liste/liste.component';
 import { ContactFormComponent } from './contact-form/contact-form.component';
+import { GestionComponent } from './gestion/gestion.component';
+import { Error404Component } from './error404/error404.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { ContactFormComponent } from './contact-form/contact-form.component';
     HomeComponent,
     FooterComponent,
     ListeComponent,
-    ContactFormComponent
+    ContactFormComponent,
+    GestionComponent,
+    Error404Component
   ],
   imports: [
     BrowserModule,
