@@ -29,7 +29,7 @@
       </div>
     <div class="col">
       <div *ngIf="!contactForm.get('ishideEmail')?.value">
-        <input type="email"  pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" aria-describedby="emailWarning" class="form-control" formControlName="email" placeholder="Email">
+        <input type="email" aria-describedby="emailWarning" class="form-control" formControlName="email" placeholder="Email">
         <span *ngIf="contactForm.get('email')?.errors?.['required']">
           <small id="emailWarning" class="form-text text-danger">Veuillez renseignez votre mail</small>
         </span>

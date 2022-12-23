@@ -2,22 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import { Router } from '@angular/router';
 import { DataServiceService } from '../dataService.service';
-
-export class Person {
-  firstName: string;
-  lastName: string;
-  email?: string;
-  age?: string;
-  comment: string;
-
-  constructor(firstName: string, lastName: string,comment: string, email?: string, age?: string) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.email = email;
-    this.age = age;
-    this.comment = comment;
-  }
-}
+import { Person } from '../person';
 
 @Component({
   selector: 'app-contact-form',
@@ -30,8 +15,8 @@ export class ContactFormComponent implements OnInit {
     firstName: new FormControl('',Validators.required),
     lastName: new FormControl('',Validators.required),
     age: new FormControl(''),
-    ishideEmail: new FormControl(true),
-    email: new FormControl('',[Validators.email,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+    ishideEmail: new FormControl(false),
+    email: new FormControl('',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
     comment: new FormControl('',Validators.required)
   });
 
