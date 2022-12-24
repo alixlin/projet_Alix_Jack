@@ -10,7 +10,7 @@
       </span>
     </div>
     <div class="col form-group">
-      <label>Nom:</label>
+      <label>Nom</label>
       <input type="text" aria-describedby="lastNameWarning" class="form-control" formControlName="lastName">
       <span *ngIf="contactForm.get('lastName')?.errors?.['required']">
         <small id="lastNameWarning" class="form-text text-danger">Veuillez renseignez votre Nom</small>
