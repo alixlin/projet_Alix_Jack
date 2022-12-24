@@ -1,6 +1,6 @@
 <ul class="list-group">
     <li class="list-group-item" *ngFor="let recipient of map | keyvalue">
-        <a data-toggle="collapse" href="#{{recipient.key}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+        <a data-toggle="collapse" href="#{{recipient.key}}" aria-expanded="false">
             {{recipient.key}}
           </a>
           <div class="collapse" id="{{recipient.key}}">
@@ -11,3 +11,4 @@
           </div>
     </li>
 </ul>
+<app-footer></app-footer>
