@@ -1,4 +1,5 @@
-<form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="m-4 p-4 w-50 border-primary card">
+<div class="d-flex align-items-center justify-content-center">
+<form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="m-4 p-4 w-50 border-secondary card ">
 
   <div class="form-row">
     <div class="col form-group">
@@ -50,3 +51,5 @@
     </div>
   <button type="submit" class="btn btn-primary mb-2" [disabled]="!contactForm.valid">Envoyer</button>
 </form>
+</div>
+<app-footer></app-footer>
