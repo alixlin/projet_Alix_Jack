@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: '404', component: Error404Component },
   { path: 'contact-form', component: ContactFormComponent},
   { path: '',   redirectTo: '/home', pathMatch: 'full' },
-  { path: '**', component: Error404Component }
+  { path: '**', component: HomeComponent }
 ];
 
 @NgModule({
