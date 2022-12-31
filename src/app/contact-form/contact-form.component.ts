@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import { Router } from '@angular/router';
-import { DataServiceService } from '../dataService.service';
-import { Person } from '../person';
+import { Person } from '../model/person';
+import { DataServiceService } from '../service/dataService.service';
 
 @Component({
   selector: 'app-contact-form',
@@ -10,56 +10,36 @@ import { Person } from '../person';
   styleUrls: ['./contact-form.component.scss']
 })
 export class ContactFormComponent implements OnInit {
-  
-  contactForm = new FormGroup({
-    firstName: new FormControl('',Validators.required),
-    lastName: new FormControl('',Validators.required),
-    age: new FormControl(''),
+
+  constructor(private router: Router,private dataService: DataServiceService) {}
+
+  public contactForm = new FormGroup({
+    firstName: new FormControl(undefined,Validators.required),
+    lastName: new FormControl(undefined,Validators.required),
+    age: new FormControl(undefined),
     ishideEmail: new FormControl(false),
-    email: new FormControl('',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
-    comment: new FormControl('',Validators.required)
+    email: new FormControl(undefined,[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+    comment: new FormControl(undefined,Validators.required)
   });
 
-  getFirstName(){
-    return this.contactForm.get('firstName')?.value!
+  ngOnInit(): void {
   }
 
-  getLastName(){
-    return this.contactForm.get('lastName')?.value!
-  }
-
-  getAge(){
-    return this.contactForm.get('age')?.value ?? undefined
-  }
-
-  getMail(){
-    return this.contactForm.get('email')?.value ?? undefined
-  }
-
-  getComment(){
-    return this.contactForm.get('comment')?.value!
-  }
-
-  checkboxRequired() {
-    if (this.contactForm.get('ishideEmail')?.value) {
-      this.contactForm.get('email')?.clearValidators();
-    } else {
-      this.contactForm.get('email')?.setValidators(Validators.required);
-    }
+  public checkboxRequired() {
+    this.contactForm.get('ishideEmail')?.value ? this.contactForm.get('email')?.clearValidators() : this.contactForm.get('email')?.setValidators([Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]);
     this.contactForm.get('email')?.updateValueAndValidity();
   }
 
-  constructor(private router: Router,private dataService: DataServiceService) {
-   }
-
-  onSubmit() : void {
+  public onSubmit() : void {
     alert('Le formulaire est valide');
-    const person: Person = new Person(this.getFirstName(),this.getLastName(),this.getComment(),this.getMail(),this.getAge());
+    const person = new Person();
+    person.firstName = this.contactForm.value.firstName!;
+    person.lastName = this.contactForm.value.lastName!;
+    person.comment = this.contactForm.value.comment!;
+    person.email = this.contactForm.get('ishideEmail')?.value ? this.contactForm.value.email = undefined : this.contactForm.value.email!;
+    person.age = this.contactForm.value.age ?? undefined
     this.dataService.contactForm = person;
     this.router.navigate(['/home'])
-  }
-
-  ngOnInit(): void {
   }
 
 }

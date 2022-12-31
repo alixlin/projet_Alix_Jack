@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Person } from './person';
+import { Person } from '../model/person';
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataServiceService {
 
-  public contactForm?: Person;
-
   constructor() { }
+
+  public contactForm?: Person;
 }
