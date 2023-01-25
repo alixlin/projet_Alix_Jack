@@ -1,0 +1,12 @@
+{
+  "id": 1,
+  "nom": "CAI",
+  "prenom": "Jack",
+  "favorite" : [
+    {
+      "idMeal": "1"},
+    {
+      "idMeal": "2"}]
+
+}
+

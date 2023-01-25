@@ -12,6 +12,8 @@ import { ListeComponent } from './liste/liste.component';
 import { ContactFormComponent } from './contact-form/contact-form.component';
 import { GestionComponent } from './gestion/gestion.component';
 import { Error404Component } from './error404/error404.component';
+import {HttpClientModule} from "@angular/common/http";
+import { ProjectHomeComponent } from './project-home/project-home.component';
 
 @NgModule({
   declarations: [
@@ -22,13 +24,15 @@ import { Error404Component } from './error404/error404.component';
     ListeComponent,
     ContactFormComponent,
     GestionComponent,
-    Error404Component
+    Error404Component,
+    ProjectHomeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

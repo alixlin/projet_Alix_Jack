@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {Service} from "../service";
 import {Test} from "../model/test";
-import {lastValueFrom, Subscription} from "rxjs";
+import {Service} from "../service";
+import {lastValueFrom} from "rxjs";
 
 @Component({
-  selector: 'app-error404',
-  templateUrl: './error404.component.html',
-  styleUrls: ['./error404.component.scss']
+  selector: 'app-project-home',
+  templateUrl: './project-home.component.html',
+  styleUrls: ['./project-home.component.scss']
 })
-export class Error404Component implements OnInit {
+export class ProjectHomeComponent implements OnInit {
 
   public toto?:Test;
 
