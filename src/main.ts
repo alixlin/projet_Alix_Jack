@@ -11,8 +11,17 @@ if (environment.production) {
 
 new Server({
   routes() {
-    this.passthrough();
+
     this.get('/toto', () => require('./app/data/mock-user.data.json'));
+    this.get('/mealsList/:start/:end', (schema,request) => {
+      let start = request.params['start']
+      let end = request.params['end']
+      return require('./app/data/mock-mealsList.json').meals.slice(start,end);
+    }, { timing: 400 });
+    this.get('/mealsList', () => require('./app/data/mock-mealsList.json').meals);
+    this.urlPrefix = 'https://www.themealdb.com/api/json/v1/1';
+    this.passthrough();
+    this.get('/search.php?f=b')
   }
 })
 platformBrowserDynamic().bootstrapModule(AppModule)

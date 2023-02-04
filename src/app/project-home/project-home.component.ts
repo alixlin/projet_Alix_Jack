@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Test} from "../model/test";
-import {Service} from "../service";
+import {Service} from "../../DataService/service";
 import {lastValueFrom} from "rxjs";
 
 @Component({

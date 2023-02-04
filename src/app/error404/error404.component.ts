@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Service} from "../service";
+import {Service} from "../../DataService/service";
 import {Test} from "../model/test";
 import {lastValueFrom, Subscription} from "rxjs";
 
