@@ -9,12 +9,3 @@
     grid-template-columns: 250px minmax(10px, 1fr);
   }
 }
-
-aside {
-  overflow-y: auto;
-  max-height: 80vh;
-  position: sticky;
-  top: 70px;
-  align-self: start;
-  background-color: white;
-}

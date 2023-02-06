@@ -14,6 +14,9 @@ import {Error404Component} from './error404/error404.component';
 import {HttpClientModule} from "@angular/common/http";
 import {ProjectHomeComponent} from './project-home/project-home.component';
 import {AmIVisibleDirective} from "./home/am-ivisible.directive";
+import { SearchBarComponent } from './search-bar/search-bar.component';
+import { SideFilterComponent } from './side-filter/side-filter.component';
+import { DetailsComponent } from './details/details.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import {AmIVisibleDirective} from "./home/am-ivisible.directive";
     GestionComponent,
     Error404Component,
     ProjectHomeComponent,
-    AmIVisibleDirective
+    AmIVisibleDirective,
+    SearchBarComponent,
+    SideFilterComponent,
+    DetailsComponent
   ],
   imports: [
     BrowserModule,

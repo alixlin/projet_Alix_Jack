@@ -1,0 +1,94 @@
+<aside>
+  <h2 class="font-bold">175 recettes</h2>
+  <nav>
+    <div>
+      <details class="group bg-white shadow">
+        <summary class="flex cursor-pointer">
+          <h3 class="flex flex-1 font-medium py-6 ">Category</h3>
+          <div class="flex w-10 items-center justify-center">
+            <div
+              class="ml-2 origin-left border-8 border-transparent border-l-orange-400 transition-transform group-open:rotate-90"></div>
+          </div>
+        </summary>
+        <form [formGroup]="categoryForm">
+          <ul class="space-y-4 pb-6 test-base ">
+            <li>
+              <div>
+                <input formControlName="category" type="radio" name="category" id="allCategory" value="allCategory" class="peer hidden" checked/>
+                <label
+                  for="allCategory"
+                  class="block max-w-1/2 min-w-fit cursor-pointer select-none rounded-xl p-2 peer-checked:bg-orange-400 peer-checked:font-semibold peer-checked:text-white"
+                >All</label>
+              </div>
+            </li>
+            <li *ngFor="let category of categories">
+              <div>
+                <input formControlName="category" type="radio" name="category" id={{category.strCategory}} value={{category.strCategory}} class="peer hidden"/>
+                <label
+                  for={{category.strCategory}}
+                  class="block max-w-1/2 min-w-fit cursor-pointer select-none rounded-xl p-2 peer-checked:bg-orange-400 peer-checked:font-semibold peer-checked:text-white"
+                >{{category.strCategory}}</label>
+              </div>
+            </li>
+          </ul>
+        </form>
+      </details>
+      <details class="group bg-white shadow">
+        <summary class="flex cursor-pointer">
+          <h3 class="flex flex-1 font-medium py-6">Area</h3>
+          <div class="flex w-10 items-center justify-center">
+            <div
+              class="ml-2 origin-left border-8 border-transparent border-l-orange-400 transition-transform group-open:rotate-90"></div>
+          </div>
+        </summary>
+        <form [formGroup]="areaForm">
+          <ul class="space-y-4 pb-6 test-base ">
+            <li>
+              <div>
+                <input formControlName="area" type="radio" name="area" id="allArea" value="allArea" class="peer hidden" checked/>
+                <label
+                  for="allArea"
+                  class="block max-w-1/2 min-w-fit cursor-pointer select-none rounded-xl p-2 peer-checked:bg-orange-400 peer-checked:font-semibold peer-checked:text-white"
+                >All</label>
+              </div>
+            </li>
+            <li *ngFor="let area of areas">
+              <div>
+                <input formControlName="area" type="radio" name="area" id={{area.strArea}} value={{area.strArea}} class="peer hidden"/>
+                <label
+                  for={{area.strArea}}
+                  class="block max-w-1/2 min-w-fit cursor-pointer select-none rounded-xl p-2 peer-checked:bg-orange-400 peer-checked:font-semibold peer-checked:text-white"
+                >{{area.strArea}}</label>
+              </div>
+            </li>
+          </ul>
+        </form>
+      </details>
+      <details class="group bg-white shadow">
+        <summary class="flex cursor-pointer">
+          <h3 class="flex flex-1 font-medium py-6">Ingredient</h3>
+          <div class="flex w-10 items-center justify-center">
+            <div
+              class="ml-2 origin-left border-8 border-transparent border-l-orange-400 transition-transform group-open:rotate-90"></div>
+          </div>
+        </summary>
+        <form [formGroup]="ingredientForm">
+          <ul class="space-y-4 pb-6 test-base ">
+            <li>
+              <div class="align-baseline ">
+                <input formControlName='item1' type="checkbox" class="cursor-pointer">
+                <label class="ml-3 cursor-pointer"></label>
+              </div>
+            </li>
+            <li *ngFor="let ingredient of ingredients">
+              <div class="align-baseline ">
+                <input formControlName={{ingredient.strIngredient}} value={{ingredient.strIngredient}} id={{ingredient.idIngredient}} type="checkbox" class="cursor-pointer">
+                <label for={{ingredient.idIngredient}} class="ml-3 cursor-pointer">{{ingredient.strIngredient}}</label>
+              </div>
+            </li>
+          </ul>
+        </form>
+      </details>
+    </div>
+  </nav>
+</aside>

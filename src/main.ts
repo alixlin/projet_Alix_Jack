@@ -21,7 +21,6 @@ new Server({
     this.get('/mealsList', () => require('./app/data/mock-mealsList.json').meals);
     this.urlPrefix = 'https://www.themealdb.com/api/json/v1/1';
     this.passthrough();
-    this.get('/search.php?f=b')
   }
 })
 platformBrowserDynamic().bootstrapModule(AppModule)
