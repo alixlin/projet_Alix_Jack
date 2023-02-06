@@ -36,8 +36,8 @@
           <app-side-filter></app-side-filter>
           <main>
             <app-search-bar></app-search-bar>
-            <ng-container *ngIf="meals2.length;else notFound;">
-            <div class="flex flex-wrap bg-white mt-4" *ngFor="let meal of meals2">
+            <ng-container *ngIf="mealsSample.length;else notFound;">
+            <div class="flex flex-wrap bg-white mt-4" *ngFor="let meal of mealsSample">
               <div class="w-1/4 cursor-pointer" (click)="openMealDetails(meal.idMeal)">
                 <img src="{{meal.strMealThumb}}" class="w-full rounded-l-3xl object-cover">
               </div>
@@ -78,7 +78,7 @@
               </div>
             </div>
             </ng-container>
-            <div id="myDiv" class="bg-green-600 w-full h-10"></div>
+            <div id="divDetector" class="bg-green-600 w-full h-10"></div>
         <ng-template #notFound>
               Not found !
             </ng-template>
