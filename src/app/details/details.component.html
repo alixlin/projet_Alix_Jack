@@ -1,24 +1,25 @@
-<div class="relative z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
-  <!--
-    Background backdrop, show/hide based on slide-over state.
+<!--
+  Background backdrop, show/hide based on slide-over state.
 
-    Entering: "ease-in-out duration-500"
-      From: "opacity-0"
-      To: "opacity-100"
-    Leaving: "ease-in-out duration-500"
-      From: "opacity-100"
-      To: "opacity-0"
-  -->
-  <button (click)="toggleSidebar()">Show/Hide Sidebar</button>
-  <!-- component -->
-  <section class="text-gray-700 body-font overflow-hidden bg-green-600">
-    <div class="container px-5 py-24 mx-auto">
-      <div class="lg:w-4/5 mx-auto flex flex-wrap">
-        <h1 class="text-gray-900 text-3xl title-font font-medium mb-3">{{meal?.strMeal}}</h1>
-        <img class=" aspect-4/3 w-full object-cover object-center rounded-3xl border border-gray-200"
-             src="{{meal?.strMealThumb}}">
-        <div class=" w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0 bg-yellow-300">
-          <div class="flex mb-4">
+  Entering: "ease-in-out duration-500"
+    From: "opacity-0"
+    To: "opacity-100"
+  Leaving: "ease-in-out duration-500"
+    From: "opacity-100"
+    To: "opacity-0"
+-->
+<div [@enterLeaveBackground] *ngIf="isMenuOpen" class="fixed inset-0 bg-black bg-opacity-60 transition-opacity"></div>
+<button #toggleButton (click)="toggleMenu()">Show/Hide Sidebar</button>
+<!-- component -->
+<section class="text-gray-700 body-font overflow-hidden">
+  <div class="container px-5 py-24 mx-auto">
+    <div class="lg:w-4/5 mx-auto flex flex-wrap justify-center">
+      <div>
+        <h1 class="text-gray-900 text-3xl title-font font-medium mb-3">{{meal?.strMeal}}</h1></div>
+      <img class=" w-full object-cover object-center rounded-3xl border border-gray-200"
+           src="{{meal?.strMealThumb}}">
+      <div class=" w-full lg:pl-10 lg:pr-10 lg:py-6 mt-6 lg:mt-0">
+        <div class="flex mb-4 justify-between">
           <span class="flex items-center">
             <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                  stroke-width="2" class="w-4 h-4 text-red-500" viewBox="0 0 24 24">
@@ -46,163 +47,155 @@
                 d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
             </svg>
           </span>
-          </div>
-          <p class="leading-relaxed">{{meal?.strInstructions}}</p>
-          <div class="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
-            <div class="flex">
-              <span class="mr-3">Color</span>
-              <button class="border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none"></button>
-              <button
-                class="border-2 border-gray-300 ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none"></button>
-              <button class="border-2 border-gray-300 ml-1 bg-red-500 rounded-full w-6 h-6 focus:outline-none"></button>
-            </div>
-            <div class="flex ml-6 items-center">
-              <span class="mr-3">Size</span>
-              <div class="relative">
-                <select
-                  class="rounded border appearance-none border-gray-400 py-2 focus:outline-none focus:border-red-500 text-base pl-3 pr-10">
-                  <option>SM</option>
-                  <option>M</option>
-                  <option>L</option>
-                  <option>XL</option>
-                </select>
-                <span
-                  class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
-                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                     class="w-4 h-4" viewBox="0 0 24 24">
-                  <path d="M6 9l6 6 6-6"></path>
-                </svg>
+          <button
+            class=" rounded-3xl p-2 bg-orange-400 font-medium text-white hover:bg-orange-500">
+            <span class="flex items-center">
+              <span class=" mr-2">            <svg class="fill-current w-auto h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+            <path
+              d="M15.786 29.755h-.001c-.281 0-.537-.111-.724-.292L3.182 17.985a.333.333 0 0 1-.046-.046v-.001a10.145 10.145 0 0 1-2.608-6.55v-.013c0-5.035 3.861-9.13 8.608-9.13a8.154 8.154 0 0 1 6.763 3.699l.019.031c1.463-2.239 3.949-3.705 6.778-3.73h.004c4.695 0 8.347 4.012 8.347 9.13v.1c0 2.467-.888 4.728-2.361 6.479l.013-.015-.068.073L16.486 29.49a1.04 1.04 0 0 1-.696.266h-.003zM4.663 16.535l11.133 10.753L27.175 16.53a8.052 8.052 0 0 0 1.785-5.073v-.086.004c0-3.949-2.749-7.043-6.261-7.043-2.546 0-4.826 1.68-5.807 4.283a1.045 1.045 0 0 1-1.949.007l-.002-.007c-.981-2.603-3.261-4.283-5.807-4.283-3.595 0-6.521 3.162-6.521 7.043a8.176 8.176 0 0 0 2.058 5.168l-.007-.009zm23.263.72z">
+
+            </path>
+            </svg></span>
+              <p>Add favorites</p>
               </span>
-              </div>
+          </button>
+        </div>
+        <div class="flex mb-4 items-center">
+          <svg class="fill-orange-400 h-12 w-12 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+            <path d="M9.232 14.667c.46 0 .833-.373.833-.833v-.541a.833.833 0 0 0-1.666 0v.541c0 .46.373.833.833.833zm-1.624.229h-.541a.833.833 0 0 0 0 1.666h.541a.833.833 0 0 0 0-1.666zm3.249 1.666h.541a.833.833 0 0 0 0-1.666h-.541a.833.833 0 0 0-.001 1.666z">
+            </path>
+            <path d="M27.964 22.013c-.706 1.287-.912 1.539-1.677 1.539H5.712c-.764 0-.969-.251-1.671-1.531-.189-.344-.396-.722-.647-1.121h25.211c-.248.396-.454.771-.641 1.112zM5.199 15.729c0-2.224 1.809-4.033 4.033-4.033a4.037 4.037 0 0 1 4 4.537l-3.213 2.202a.836.836 0 0 0 .046-.27v-.541a.832.832 0 1 0-1.666-.001v.541a.83.83 0 0 0 .178.514H6.484a4.038 4.038 0 0 1-1.285-2.95zm12.037-7.045l.106.249c.444 1.044.832 1.955 1.03 3.776l-2.965 2.033a6.249 6.249 0 0 0-1.807-3.483c1.055-1.466 2.654-2.225 3.637-2.575zm5.56 3.685c.688.998 1.725 2.839 1.674 4.785l-4.455.468-.323-.899a.833.833 0 1 0-1.568.564l.184.514-4.057.426 6.301-4.32.86 1.73a.834.834 0 0 0 1.492-.742l-.964-1.94.856-.587zm9.12 6.995a1.113 1.113 0 0 0-1.026-.686h-4.432c.049-.094.087-.196.108-.305.196-1.018.15-2.011-.032-2.936l2.314.309a1.111 1.111 0 0 0 .294-2.202l-2.358-.314 1.903-1.849a1.112 1.112 0 0 0-1.547-1.594l-2.066 2.007c-.599-.991-1.148-1.617-1.205-1.679a1.11 1.11 0 0 0-1.456-.177l-1.996 1.368c-.26-1.441-.649-2.355-1.029-3.246-.156-.367-.304-.715-.448-1.107a1.11 1.11 0 0 0-1.252-.708c-.167.031-3.804.763-5.924 3.765a6.215 6.215 0 0 0-2.53-.537 6.26 6.26 0 0 0-6.253 6.254c0 1.042.261 2.052.741 2.95H1.113a1.111 1.111 0 0 0-.785 1.896c.862.862 1.344 1.74 1.769 2.515.69 1.257 1.473 2.683 3.618 2.683h20.574c2.147 0 2.932-1.43 3.625-2.691.426-.774.907-1.651 1.764-2.507.317-.317.412-.795.241-1.21z">
+            </path>
+          </svg>
+          <div class="mx-3 font-bold">
+            <div class="text-left">
+              Ingredients
             </div>
           </div>
-          <div class="flex">
-            <span class="title-font font-medium text-2xl text-gray-900">$58.00</span>
-            <button
-              class="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">
-              Button
-            </button>
-            <button
-              class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
-              <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5"
-                   viewBox="0 0 24 24">
-                <path
-                  d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+          <hr class="flex grow shrink h-px bg-black">
+        </div>
+        <div class="flex mb-4 ">
+          <ul class="text-xl ">
+            <li *ngFor="let ingredientMeasure of ingredientsAndMeasures">
+              <span class="font-bold">{{ingredientMeasure[1]}}</span><span> {{ingredientMeasure[0]}}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="flex mb-4 items-center">
+          <svg class="fill-orange-400 h-10 w-10 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+            <path d="M29.591 4.998l-8.93 8.935-.547-.549-2.076-2.077 8.93-8.935a1.855 1.855 0 0 1 2.624 0c.744.705.744 1.881 0 2.626zM13.885 26.279a6.438 6.438 0 0 1-1.371 2.038 6.259 6.259 0 0 1-6.619 1.45h.039c.156-.039.313-.078.509-.118.039 0 .079-.039.117-.039.196-.039.353-.117.549-.196.039 0 .078-.039.117-.039.196-.078.352-.157.548-.235h.039c.196-.079.392-.196.548-.313.039-.039.079-.039.118-.079a6.29 6.29 0 0 0 .548-.353c.039 0 .039-.039.078-.039.157-.117.353-.235.51-.392.039-.039.078-.039.078-.079.196-.156.353-.313.549-.47l.117-.118a6.67 6.67 0 0 0 .548-.509c.666-.667 1.254-1.41 1.763-2.115l5.17-7.879-3.956 9.485zm-8.382 2.272c-.039 0-.078 0-.117.039-.078 0-.196.039-.274.039h-.429c-.079 0-.196 0-.274-.039-.039 0-.078 0-.078-.039-.039 0-.079-.039-.118-.039l12.925-12.933-5.405 8.347a12.162 12.162 0 0 1-1.606 1.96c-.157.157-.313.275-.469.43a.546.546 0 0 1-.157.119c-.117.077-.234.195-.313.273-.039.04-.117.079-.157.119-.118.077-.196.156-.314.235-.039.039-.117.079-.157.117-.117.079-.196.157-.313.196-.039.039-.118.079-.157.117a1.558 1.558 0 0 1-.353.196c-.039.04-.078.04-.117.079-.313.157-.588.313-.901.431-.039 0-.079.039-.118.039-.117.039-.196.079-.313.117-.039 0-.079.039-.118.039a.728.728 0 0 1-.274.078c-.039 0-.078.04-.117.04-.078.039-.196.039-.274.039h-.001zM3.35 27.65c0-.039 0-.039-.039-.079 0-.079-.039-.156-.039-.275v-.352c.039-.04.039-.079.039-.118 0-.078 0-.157.039-.235 0-.039 0-.079.039-.156 0-.079.039-.157.039-.236 0-.039.039-.117.039-.156.039-.079.039-.157.079-.236 0-.039.039-.117.039-.156.039-.079.078-.197.117-.275.039-.04.039-.079.039-.157.039-.117.117-.235.156-.392 0 0 0-.039.04-.039.078-.157.156-.275.235-.432.039-.039.039-.078.078-.156.079-.118.118-.196.196-.314.039-.039.079-.118.118-.157.078-.079.117-.196.196-.275.039-.079.078-.117.117-.196.079-.079.157-.196.235-.275.039-.078.078-.117.156-.196.079-.117.157-.196.274-.313.039-.039.079-.117.118-.156.157-.157.274-.315.43-.471a12.65 12.65 0 0 1 1.958-1.608l8.265-5.408L3.388 27.764c0-.039-.039-.079-.039-.117zm-.314-3.606c-.039.079-.078.196-.117.275-.039.117-.117.235-.157.353-.039.078-.079.157-.118.275l-.117.353c-.039.079-.039.157-.079.235l-.117.353c0 .039-.039.117-.039.157a6.236 6.236 0 0 1 1.371-6.623c.588-.588 1.254-1.058 2.037-1.372l9.556-3.919-7.833 5.134a11.009 11.009 0 0 0-2.115 1.764c-.196.196-.392.392-.549.588a.716.716 0 0 0-.156.196c-.119.119-.235.275-.353.392-.078.079-.117.157-.196.236-.078.117-.196.235-.274.352a.636.636 0 0 0-.156.275l-.235.353c-.039.078-.118.196-.157.275-.078.117-.117.235-.196.352zM30.452 1.548c-1.214-1.176-3.133-1.176-4.308 0l-9.36 9.367a.566.566 0 0 0 0 .822l.313.314-11.828 4.937c-.901.392-1.723.901-2.429 1.607-2.898 2.9-2.898 7.642 0 10.542a7.451 7.451 0 0 0 5.249 2.195 7.38 7.38 0 0 0 5.248-2.195 7.09 7.09 0 0 0 1.606-2.43l4.934-11.875.353.353a.589.589 0 0 0 .43.156.593.593 0 0 0 .432-.156l9.36-9.327c1.175-1.215 1.175-3.135 0-4.311z"></path>
+          </svg>
+          <div class="mx-3 font-bold">
+            <div class="text-left">
+              Instructions
+            </div>
+          </div>
+          <hr class="flex grow shrink h-px bg-black">
+        </div>
+        <div class="flex mb-6 border-gray-200 border-b-2 pb-5">
+          <p class="leading-relaxed text-justify">{{meal?.strInstructions}}</p>
+        </div>
+        <div class="flex items-center">
+          <span class="title-font font-medium text-2xl text-gray-900">$58.00</span>
+          <button
+            class="flex ml-auto text-2xl rounded-3xl py-2 px-6 bg-orange-400 font-medium text-white hover:bg-orange-500 ">
+            Add to cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div [@enterLeaveTrigger] #menu *ngIf="isMenuOpen" class="  fixed inset-y-0 right-0 flex max-w-full">
+  <div class=" sidebar max-w-md">
+    <div class="flex h-full flex-col bg-white shadow-xl">
+      <div class="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
+        <div class="flex items-start justify-between">
+          <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Shopping cart</h2>
+          <div class="ml-3 flex h-7 items-center">
+            <button type="button" class="-m-2 p-2 text-gray-400 hover:text-gray-500" (click)="toggleMenu()">
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                   stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
               </svg>
             </button>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <div *ngIf="showSidebar" class=" fixed inset-0 overflow-hidden">
-    <div class="absolute inset-0 overflow-hidden">
-      <div class=" pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
-        <!--
-          Slide-over panel, show/hide based on slide-over state.
-
-          Entering: "transform transition ease-in-out duration-500 sm:duration-700"
-            From: "translate-x-full"
-            To: "translate-x-0"
-          Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
-            From: "translate-x-0"
-            To: "translate-x-full"
-        -->
-        <div class="sidebar pointer-events-auto max-w-md">
-          <div class="flex h-full flex-col bg-white shadow-xl">
-            <div class="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
-              <div class="flex items-start justify-between">
-                <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Shopping cart</h2>
-                <div class="ml-3 flex h-7 items-center">
-                  <button type="button" class="-m-2 p-2 text-gray-400 hover:text-gray-500" (click)="toggleSidebar()">
-                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                         stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                  </button>
+        <div class="mt-8">
+          <div class="flow-root">
+            <ul role="list" class="-my-6 divide-y divide-gray-200">
+              <li class="flex py-6">
+                <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                  <img src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg"
+                       alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
+                       class="h-full w-full object-cover object-center">
                 </div>
-              </div>
 
-              <div class="mt-8">
-                <div class="flow-root">
-                  <ul role="list" class="-my-6 divide-y divide-gray-200">
-                    <li class="flex py-6">
-                      <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                        <img src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg"
-                             alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
-                             class="h-full w-full object-cover object-center">
-                      </div>
+                <div class="ml-4 flex flex-1 flex-col">
+                  <div>
+                    <div class="flex justify-between text-base font-medium text-gray-900">
+                      <h3>
+                        <a href="#">Throwback Hip Bag</a>
+                      </h3>
+                      <p class="ml-4">$90.00</p>
+                    </div>
+                    <p class="mt-1 text-sm text-gray-500">Salmon</p>
+                  </div>
+                  <div class="flex flex-1 items-end justify-between text-sm">
+                    <p class="text-gray-500">Qty 1</p>
 
-                      <div class="ml-4 flex flex-1 flex-col">
-                        <div>
-                          <div class="flex justify-between text-base font-medium text-gray-900">
-                            <h3>
-                              <a href="#">Throwback Hip Bag</a>
-                            </h3>
-                            <p class="ml-4">$90.00</p>
-                          </div>
-                          <p class="mt-1 text-sm text-gray-500">Salmon</p>
-                        </div>
-                        <div class="flex flex-1 items-end justify-between text-sm">
-                          <p class="text-gray-500">Qty 1</p>
-
-                          <div class="flex">
-                            <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Remove
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-
-                    <li class="flex py-6">
-                      <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                        <img src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg"
-                             alt="Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch."
-                             class="h-full w-full object-cover object-center">
-                      </div>
-
-                      <div class="ml-4 flex flex-1 flex-col">
-                        <div>
-                          <div class="flex justify-between text-base font-medium text-gray-900">
-                            <h3>
-                              <a href="#">Medium Stuff Satchel</a>
-                            </h3>
-                            <p class="ml-4">$32.00</p>
-                          </div>
-                          <p class="mt-1 text-sm text-gray-500">Blue</p>
-                        </div>
-                        <div class="flex flex-1 items-end justify-between text-sm">
-                          <p class="text-gray-500">Qty 1</p>
-
-                          <div class="flex">
-                            <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Remove
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-
-                    <!-- More products... -->
-                  </ul>
+                    <div class="flex">
+                      <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Remove
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </li>
 
-            <div class="border-t bg-gray-50 border-gray-200 py-6 px-4 sm:px-6">
-              <div class="flex justify-between text-base font-medium text-gray-900">
-                <p>Subtotal</p>
-                <p>$262.00</p>
-              </div>
-              <div class="mt-6">
-                <a href="#"
-                   class="flex items-center justify-center rounded-md border border-transparent bg-orange-400 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-orange-500">Checkout</a>
-              </div>
-            </div>
+              <li class="flex py-6">
+                <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                  <img src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg"
+                       class="h-full w-full object-cover object-center">
+                </div>
+
+                <div class="ml-4 flex flex-1 flex-col">
+                  <div>
+                    <div class="flex justify-between text-base font-medium text-gray-900">
+                      <h3>
+                        <a href="#">Medium Stuff Satchel</a>
+                      </h3>
+                      <p class="ml-4">$32.00</p>
+                    </div>
+                    <p class="mt-1 text-sm text-gray-500">Blue</p>
+                  </div>
+                  <div class="flex flex-1 items-end justify-between text-sm">
+                    <p class="text-gray-500">Qty 1</p>
+
+                    <div class="flex">
+                      <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Remove
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <!-- More products... -->
+            </ul>
           </div>
         </div>
       </div>
-    </div>
 
+      <div class="border-t bg-gray-50 border-gray-200 py-6 px-4 sm:px-6">
+        <div class="flex justify-between text-base font-medium text-gray-900">
+          <p>Subtotal</p>
+          <p>$262.00</p>
+        </div>
+        <div class="mt-6">
+          <a href="#"
+             class="flex items-center justify-center rounded-md border border-transparent bg-orange-400 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-orange-500">Checkout</a>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
