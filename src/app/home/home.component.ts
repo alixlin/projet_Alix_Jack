@@ -1,10 +1,10 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit} from '@angular/core';
 import {Service} from "../../DataService/service";
 import {
   filter,
   fromEvent,
   map,
-  of,
+  of, Subscription,
   switchMap
 } from "rxjs";
 import {Meal} from "../model/Meal";
@@ -15,7 +15,9 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
+
+  private subscription?: Subscription;
   public mealsSample: Meal[] = [];
   private mealList: Meal[] = [];
 
@@ -26,10 +28,14 @@ export class HomeComponent implements OnInit {
   ) {
   }
 
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
+  }
+
   ngOnInit() {
     const divElement = this.el.nativeElement.querySelector('#divDetector');
     const scroll$ = fromEvent(window, 'scroll');
-    scroll$.pipe(
+    this.subscription = scroll$.pipe(
       map(() => divElement.getBoundingClientRect()),
       switchMap(rect => {
         if (rect.top >= 0 && rect.left >= 0 &&
@@ -42,6 +48,7 @@ export class HomeComponent implements OnInit {
       }),
       filter(isVisible => isVisible)
     ).subscribe(() => {
+      console.log("hello")
       this.getMealSample();
     });
 
@@ -62,6 +69,7 @@ export class HomeComponent implements OnInit {
 
   getMealList() {
     this.service.fetchMealsList().subscribe((rslt) => {
+      console.log("getMealList");
       this.mealList = rslt;
       this.mealsSample = [];
       this.getMealSample();
@@ -70,6 +78,7 @@ export class HomeComponent implements OnInit {
 
   searchMeal(search?: string): void {
     this.service.fetchMealsListBy(search).subscribe((rslts) => {
+      console.log("searchMeal");
       const rst = rslts.meals
       this.mealList = rst == null ? [] : rst;
       this.mealsSample = [];
