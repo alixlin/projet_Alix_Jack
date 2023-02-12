@@ -13,6 +13,7 @@ new Server({
   routes() {
 
     this.get('/toto', () => require('./app/data/mock-user.data.json'));
+    this.get('/usersList', () => require('./app/data/mock-user.data.json'));
     this.get('/mealsList/:start/:end', (schema,request) => {
       let start = request.params['start']
       let end = request.params['end']

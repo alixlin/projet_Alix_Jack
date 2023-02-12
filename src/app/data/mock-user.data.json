@@ -1,6 +1,28 @@
-{
-  "id": 1,
-  "nom": "CAI",
-  "prenom": "Jack"
-}
+[
+  {
+    "email": "jack@gmail.com",
+    "password": "123123",
+    "roles": "User"
+  },
+  {
+    "email": "jack1@gmail.com",
+    "password": "123123",
+    "roles": "User"
+  },
+  {
+    "email": "jack2@gmail.com",
+    "password": "123123",
+    "roles": "User"
+  },
+  {
+    "email": "jack3@gmail.com",
+    "password": "123123",
+    "roles": "User"
+  },
+  {
+    "email": "jack4@gmail.com",
+    "password": "123123",
+    "roles": "User"
+  }
+]
 

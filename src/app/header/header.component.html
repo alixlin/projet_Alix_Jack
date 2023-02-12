@@ -16,7 +16,7 @@
     </ul>
 </nav>
 -->
-<div>
+<div class="border-b-2 border-gray-100">
   <div class="mx-auto max-w-7xl px-6">
     <div class="flex items-center justify-between py-6 md:justify-start md:space-x-10">
       <div class="flex justify-start lg:w-0 lg:flex-1">
@@ -25,12 +25,15 @@
         </a>
       </div>
       <a routerLink="/home" routerLinkActive="active" class="text-2xl font-medium text-orange-400 hover:text-orange-500 hover:no-underline">MyCook</a>
-      <div class="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
-        <a href="#" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900 hover:no-underline">Sign in</a>
-        <a href="#" class="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-orange-400 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-orange-500 hover:no-underline">Sign up</a>
+      <div *ngIf="!authService.isAuthenticated()" class="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
+        <a routerLink="/login" routerLinkActive="active" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900 hover:no-underline">Sign in</a>
+        <a routerLink="/register" routerLinkActive="active" class="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-orange-400 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-orange-500 hover:no-underline">Sign up</a>
+      </div>
+      <div *ngIf="authService.isAuthenticated()" class="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
+        <p class="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-2 text-base font-medium text-orange-400 ">{{authService.authenticatedUser?.email}}</p>
+        <a (click)="handleLogout()" class="cursor-pointer ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-orange-400 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-orange-500 hover:no-underline">Log out</a>
       </div>
     </div>
 </div>
 </div>
-
 

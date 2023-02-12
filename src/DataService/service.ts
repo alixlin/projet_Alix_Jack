@@ -3,6 +3,7 @@ import {Injectable} from "@angular/core";
 import {Test} from "../app/model/test";
 import {lastValueFrom, map} from "rxjs";
 import {Meal} from "../app/model/Meal";
+import {AppUser} from "../app/model/user";
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,10 @@ export class Service {
         }
       )
     );
+  }
+
+  public getUsersList() {
+    return this.http.get<AppUser[]>('/usersList');
   }
 
   public fetchMealsList() {

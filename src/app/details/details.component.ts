@@ -13,43 +13,11 @@ import {trigger, style, animate, transition} from '@angular/animations';
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss'],
-  animations: [
-    trigger('enterLeaveTrigger', [
-      transition(':enter', [
-        style({transform: "translateX(100%)"}),
-        animate('500ms ease-in', style({transform: "translateX(0)"})),
-      ]),
-      transition(':leave', [
-        style({transform: "translateX(0)"}),
-        animate('500ms ease-out', style({transform: "translateX(100%)"}))
-      ])
-    ]),
-    trigger('enterLeaveBackground', [
-      transition(':enter', [
-        style({opacity: "0"}),
-        animate('500ms ease-in', style({opacity: "1"})),
-      ]),
-      transition(':leave', [
-        style({opacity: "1"}),
-        animate('500ms ease-out', style({opacity: "0"}))
-      ])
-    ])
-  ]
+  styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit {
 
-  @ViewChild('toggleButton') toggleButton?: ElementRef;
-  @ViewChild('menu') menu?: ElementRef;
-
-  public isMenuOpen:Boolean = false;
-
-  toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen;
-  }
-
   meal?: Meal;
-  showSidebar = false;
   ingredientsAndMeasures: any[] = [];
 
   constructor(private activatedRoute: ActivatedRoute, private service: Service, private renderer: Renderer2) {
@@ -58,16 +26,6 @@ export class DetailsComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe((params: Params) => {
       this.getMealDetails(params['id']);
-    });
-
-    this.renderer.listen('window', 'click', (e: Event) => {
-      console.log(this.menu?.nativeElement);
-      if (
-        e.target !== this.toggleButton?.nativeElement &&
-        !this.menu?.nativeElement.contains(e.target)
-      ) {
-        this.isMenuOpen = false;
-      }
     });
   }
 

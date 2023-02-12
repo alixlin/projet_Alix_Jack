@@ -17,6 +17,8 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
 import { SideFilterComponent } from './side-filter/side-filter.component';
 import { DetailsComponent } from './details/details.component';
 import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { CartComponent } from './cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { LoginComponent } from './login/login.component';
     SearchBarComponent,
     SideFilterComponent,
     DetailsComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
