@@ -1,0 +1,31 @@
+{
+  "meals": [
+    {
+      "strCategory": "Breakfast"
+    },
+    {
+      "strCategory": "Dessert"
+    },
+    {
+      "strCategory": "Miscellaneous"
+    },
+    {
+      "strCategory": "Pasta"
+    },
+    {
+      "strCategory": "Seafood"
+    },
+    {
+      "strCategory": "Side"
+    },
+    {
+      "strCategory": "Starter"
+    },
+    {
+      "strCategory": "Vegan"
+    },
+    {
+      "strCategory": "Vegetarian"
+    }
+  ]
+}

@@ -38,18 +38,34 @@ export class Service {
   }
 
   public fetchCategoryList(){
-    return this.http.get<any>('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
+    return this.http.get<any>('/categoryList');
   }
 
   public fetchAreaList(){
-    return this.http.get<any>('https://www.themealdb.com/api/json/v1/1/list.php?a=list');
+    return this.http.get<any>('/areaList');
   }
 
   public fetchIngredientsList(){
-    return this.http.get<any>('https://www.themealdb.com/api/json/v1/1/list.php?i=list');
+    return this.http.get<any>('/ingredientList');
   }
 
   public fetchMealById(id?:string){
     return this.http.get<any>('https://www.themealdb.com/api/json/v1/1/lookup.php?i=' + id);
+  }
+
+  public fetchAreaByName(name?:string) {
+    return this.http.get<any>('https://www.themealdb.com/api/json/v1/1/filter.php?a=' + name);
+  }
+
+  public fetchCategoryByName(name?:string) {
+    return this.http.get<any>('https://www.themealdb.com/api/json/v1/1/filter.php?c=' + name);
+  }
+
+  public fetchIngredientByName(name?:string) {
+    return this.http.get<any>('https://www.themealdb.com/api/json/v1/1/filter.php?i=' + name);
+  }
+
+  public async test(name?:string) {
+    return this.http.get<any>('https://www.themealdb.com/api/json/v1/1/filter.php?c=' + name);
   }
 }

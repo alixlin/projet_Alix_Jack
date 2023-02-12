@@ -2,14 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
 import {Service} from "../../DataService/service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss']
 })
-export class SearchBarComponent {
+export class SearchBarComponent implements OnInit{
 
   searchForm: FormGroup = new FormGroup({
     search: new FormControl(''),
@@ -31,11 +31,17 @@ export class SearchBarComponent {
       )
       .subscribe((v) =>
         {
-          // 1ERE version
-          //this.router.navigate(['home/search', v]);
-          // 2eme version
           this.router.navigate(['home'],{queryParams: { mealName: v }, queryParamsHandling: 'merge'});
         }
       )
+  }
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params: Params) => {
+      console.log("////////////////////////////////////")
+      console.log("SEARCH BAR");
+      console.log(params)
+      if (params['mealName']) this.searchForm.get('search')?.setValue(params['mealName']);
+    });
   }
 }

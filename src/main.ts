@@ -18,7 +18,10 @@ new Server({
       let end = request.params['end']
       return require('./app/data/mock-mealsList.json').meals.slice(start,end);
     }, { timing: 400 });
-    this.get('/mealsList', () => require('./app/data/mock-mealsList.json').meals);
+    this.get('/mealsList', () => require('./app/data/mock-mealsList.json'));
+    this.get('/categoryList', () => require('./app/data/categoryList.json').meals);
+    this.get('/areaList', () => require('./app/data/areaList.json').meals);
+    this.get('/ingredientList', () => require('./app/data/ingredientList.json').meals);
     this.urlPrefix = 'https://www.themealdb.com/api/json/v1/1';
     this.passthrough();
   }
