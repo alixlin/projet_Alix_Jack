@@ -16,6 +16,7 @@ import {ProjectHomeComponent} from './project-home/project-home.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { SideFilterComponent } from './side-filter/side-filter.component';
 import { DetailsComponent } from './details/details.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { DetailsComponent } from './details/details.component';
     ProjectHomeComponent,
     SearchBarComponent,
     SideFilterComponent,
-    DetailsComponent
+    DetailsComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

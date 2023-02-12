@@ -1,4 +1,4 @@
 export interface Ingredient{
-  idIngredient: string
-  strIngredient: string
+  strIngredient: string;
+  checked: boolean;
 }
