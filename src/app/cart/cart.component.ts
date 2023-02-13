@@ -41,7 +41,7 @@ export class CartComponent implements OnInit {
 
   public isMenuOpen:Boolean = false;
 
-  private compteurTest:number = 0;
+  private countTest:number = 0;
 
   public price:number = 0;
 
@@ -60,12 +60,12 @@ export class CartComponent implements OnInit {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (
         !this.toggleButton?.nativeElement.contains(e.target) &&
-        !this.menu?.nativeElement.contains(e.target) && this.isMenuOpen && this.compteurTest == 0
+        !this.menu?.nativeElement.contains(e.target) && this.isMenuOpen && this.countTest == 0
       ) {
           this.isMenuOpen = false;
       }
       else {
-        this.compteurTest = 0;
+        this.countTest = 0;
       }
     });
   }
@@ -74,13 +74,14 @@ export class CartComponent implements OnInit {
     let appUser: AppUser = JSON.parse(sessionStorage.getItem("authUser")!) as AppUser;
     appUser.cart.splice(index,1);
     this.shoppingCart.splice(index,1);
-    this.compteurTest = 1;
+    this.countTest = 1;
     this.price = this.computePrice(this.shoppingCart.length);
     sessionStorage.setItem("authUser", JSON.stringify({
       email: appUser.email,
       roles: appUser.roles,
       jwt: "JWT_TOKEN",
-      cart: appUser.cart
+      cart: appUser.cart,
+      favorite: appUser.favorite
     }));
   }
 

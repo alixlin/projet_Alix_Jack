@@ -3,31 +3,36 @@
     "email": "jack@gmail.com",
     "password": "123123",
     "roles": "User",
-    "cart": []
+    "cart": [],
+    "favorite": []
   },
   {
     "email": "jack1@gmail.com",
     "password": "123123",
     "roles": "User",
-    "cart": []
+    "cart": [],
+    "favorite": []
   },
   {
     "email": "jack2@gmail.com",
     "password": "123123",
     "roles": "User",
-    "cart": []
+    "cart": [],
+    "favorite": []
   },
   {
     "email": "jack3@gmail.com",
     "password": "123123",
     "roles": "User",
-    "cart": []
+    "cart": [],
+    "favorite": []
   },
   {
     "email": "jack4@gmail.com",
     "password": "123123",
     "roles": "User",
-    "cart": []
+    "cart": [],
+    "favorite": []
   }
 ]
 

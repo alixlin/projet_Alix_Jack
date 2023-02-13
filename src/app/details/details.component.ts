@@ -8,6 +8,8 @@ import {ActivatedRoute, Params} from "@angular/router";
 import {Service} from "../../DataService/service";
 import {Meal} from "../model/Meal";
 import {trigger, style, animate, transition} from '@angular/animations';
+import {AppUser} from "../model/user";
+import {AuthenticationService} from "../service/authentication.service";
 
 
 @Component({
@@ -20,7 +22,7 @@ export class DetailsComponent implements OnInit {
   meal?: Meal;
   ingredientsAndMeasures: any[] = [];
 
-  constructor(private activatedRoute: ActivatedRoute, private service: Service, private renderer: Renderer2) {
+  constructor(private activatedRoute: ActivatedRoute, private service: Service, private renderer: Renderer2, public authService: AuthenticationService) {
   }
 
   ngOnInit() {

@@ -1,0 +1,30 @@
+<div *ngIf="favoriteList.length > 0 ; else emptyFavorite" class=" pt-20">
+  <h1 class="mb-10 text-center text-2xl font-bold">My favorites</h1>
+  <div class="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
+    <div class="rounded-lg md:w-2/3">
+      <div *ngFor="let favorite of favoriteList; index as i" class="transition ease-in-out duration-150 hover:scale-105 hover:shadow-2xl justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
+        <img src="{{favorite.strMealThumb}}" class="w-full rounded-lg sm:w-40" />
+        <div class="sm:ml-4 sm:flex sm:w-full sm:justify-between">
+          <div class="flex items-center sm:mt-0">
+            <a routerLink="/details/{{favorite.idMeal}}" routerLinkActive="active" class="cursor-pointer text-lg font-bold text-gray-900 hover:no-underline hover:text-orange-400">{{favorite.strMeal}}</a>
+
+          </div>
+          <div  class=" flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
+            <div (click)="removeFavorite(i)" class="flex items-center space-x-4">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 cursor-pointer duration-150 hover:text-red-500">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #emptyFavorite>
+  <div class="h-screen flex items-center justify-center">
+    <div>
+        <h1>:'( You have 0 favorites</h1>
+    </div>
+  </div>
+</ng-template>

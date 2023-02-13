@@ -198,7 +198,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         email: appUser.email,
         roles: appUser.roles,
         jwt: "JWT_TOKEN",
-        cart: appUser.cart
+        cart: appUser.cart,
+        favorite: appUser.favorite
       }));
     }
     else {

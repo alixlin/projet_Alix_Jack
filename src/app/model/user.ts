@@ -3,4 +3,5 @@ export interface AppUser {
   password: string;
   roles : String[];
   cart: any[];
+  favorite: any[];
 }

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AppUser} from "../model/user";
-import {Observable, of, throwError} from "rxjs";
+import {BehaviorSubject, Observable, of, throwError} from "rxjs";
+import {Meal} from "../model/Meal";
 
 @Injectable({
   providedIn: 'root'
@@ -25,14 +26,14 @@ export class AuthenticationService {
   }
 
   public register(email: string, password: string): Observable<AppUser> {
-    this.users.push({email: email, password: password, roles: ["USER"], cart: []});
-    let appUser = {email: email, password: password, roles: ["USER"], cart: []};
+    this.users.push({email: email, password: password, roles: ["USER"], cart: [], favorite: []});
+    let appUser = {email: email, password: password, roles: ["USER"], cart: [], favorite: []};
     return of(appUser);
   }
 
   public authenticateUser(appUser: AppUser): Observable<boolean> {
     this.authenticatedUser = appUser;
-    sessionStorage.setItem("authUser", JSON.stringify({email: appUser.email, roles: appUser.roles, jwt: "JWT_TOKEN", cart: appUser.cart}));
+    sessionStorage.setItem("authUser", JSON.stringify({email: appUser.email, roles: appUser.roles, jwt: "JWT_TOKEN", cart: appUser.cart, favorite: appUser.favorite}));
     return of(true);
   }
 
@@ -57,6 +58,12 @@ export class AuthenticationService {
       }
     });
 
+    this.users.map(obj => {
+      if (obj.email === currentAppUser.email) {
+        obj.favorite = currentAppUser.favorite;
+      }
+    });
+
     sessionStorage.removeItem("authUser");
 
     return of(true);
@@ -69,6 +76,43 @@ export class AuthenticationService {
     let test2 = JSON.parse(test!) as AppUser;
     return test2;
   }
+
+
+  /////////////////////////////////////////////////////////////////////////
+  /// Favorite ///
+  /////////////////////////////////////////////////////////////////////////
+
+  removeFavorite(index: number) {
+    if (this.authenticatedUser) {
+      let appUser: AppUser = this.authenticatedUser;
+      appUser.favorite.splice(index, 1);
+      sessionStorage.setItem("authUser", JSON.stringify({
+        email: appUser.email,
+        roles: appUser.roles,
+        jwt: "JWT_TOKEN",
+        cart: appUser.cart,
+        favorite: appUser.favorite
+      }));
+    }
+  }
+
+  addFavorite(meal: Meal) {
+    if (this.authenticatedUser) {
+      let appUser: AppUser = this.authenticatedUser;
+      appUser.favorite.push(meal);
+      return sessionStorage.setItem("authUser", JSON.stringify({
+        email: appUser.email,
+        roles: appUser.roles,
+        jwt: "JWT_TOKEN",
+        cart: appUser.cart,
+        favorite: appUser.favorite
+      }));
+    }
+  }
+
+  /////////////////////////////////////////////////////////////////////////
+  /// Cart ///
+  /////////////////////////////////////////////////////////////////////////
 
 
 }

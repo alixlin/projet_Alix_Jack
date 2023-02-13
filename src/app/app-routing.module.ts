@@ -9,12 +9,14 @@ import {DetailsComponent} from "./details/details.component";
 import {LoginComponent} from "./login/login.component";
 import {AuthenticationGuard} from "./guards/authentication.guard";
 import {RegisterComponent} from "./register/register.component";
+import {FavoriteComponent} from "./favorite/favorite.component";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'details/:id', component: DetailsComponent},
   {path: 'login', component: LoginComponent, canActivate: [AuthenticationGuard]},
   {path: 'register', component: RegisterComponent, canActivate: [AuthenticationGuard]},
+  {path: 'favorite', component: FavoriteComponent},
   // {path: 'home/search/:mealName', component: HomeComponent} ne sert à rien ?
   {path: 'home/search/:mealName', component: HomeComponent},
   {path: 'projecthome', component: ProjectHomeComponent},
