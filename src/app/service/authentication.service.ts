@@ -83,36 +83,51 @@ export class AuthenticationService {
   /////////////////////////////////////////////////////////////////////////
 
   removeFavorite(index: number) {
-    if (this.authenticatedUser) {
-      let appUser: AppUser = this.authenticatedUser;
-      appUser.favorite.splice(index, 1);
-      sessionStorage.setItem("authUser", JSON.stringify({
-        email: appUser.email,
-        roles: appUser.roles,
-        jwt: "JWT_TOKEN",
-        cart: appUser.cart,
-        favorite: appUser.favorite
-      }));
-    }
+    this.authenticatedUser?.favorite.splice(index, 1);
+    sessionStorage.setItem("authUser", JSON.stringify({
+      email: this.authenticatedUser?.email,
+      roles: this.authenticatedUser?.roles,
+      jwt: "JWT_TOKEN",
+      cart: this.authenticatedUser?.cart,
+      favorite: this.authenticatedUser?.favorite
+    }));
   }
 
   addFavorite(meal: Meal) {
-    if (this.authenticatedUser) {
-      let appUser: AppUser = this.authenticatedUser;
-      appUser.favorite.push(meal);
-      return sessionStorage.setItem("authUser", JSON.stringify({
-        email: appUser.email,
-        roles: appUser.roles,
-        jwt: "JWT_TOKEN",
-        cart: appUser.cart,
-        favorite: appUser.favorite
-      }));
-    }
+    this.authenticatedUser?.favorite.push(meal);
+    return sessionStorage.setItem("authUser", JSON.stringify({
+      email: this.authenticatedUser?.email,
+      roles: this.authenticatedUser?.roles,
+      jwt: "JWT_TOKEN",
+      cart: this.authenticatedUser?.cart,
+      favorite: this.authenticatedUser?.favorite
+    }));
   }
 
   /////////////////////////////////////////////////////////////////////////
   /// Cart ///
   /////////////////////////////////////////////////////////////////////////
 
+  removeCart(index: number){
+    this.authenticatedUser?.cart.splice(index,1);
+    sessionStorage.setItem("authUser", JSON.stringify({
+      email: this.authenticatedUser?.email,
+      roles: this.authenticatedUser?.roles,
+      jwt: "JWT_TOKEN",
+      cart: this.authenticatedUser?.cart,
+      favorite: this.authenticatedUser?.favorite
+    }));
+  }
+
+  addCard(meal: Meal) {
+    this.authenticatedUser?.cart.push(meal);
+    return sessionStorage.setItem("authUser", JSON.stringify({
+      email: this.authenticatedUser?.email,
+      roles: this.authenticatedUser?.roles,
+      jwt: "JWT_TOKEN",
+      cart: this.authenticatedUser?.cart,
+      favorite: this.authenticatedUser?.favorite
+    }));
+  }
 
 }

@@ -192,15 +192,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   addCard(meal: Meal) {
     if (this.authService.isAuthenticated()){
-      let appUser: AppUser = JSON.parse(sessionStorage.getItem("authUser")!) as AppUser;
-      appUser.cart.push(meal);
-      return sessionStorage.setItem("authUser", JSON.stringify({
-        email: appUser.email,
-        roles: appUser.roles,
-        jwt: "JWT_TOKEN",
-        cart: appUser.cart,
-        favorite: appUser.favorite
-      }));
+      return this.authService.addCard(meal);
     }
     else {
       return this.router.navigateByUrl("/login");

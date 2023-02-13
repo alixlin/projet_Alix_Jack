@@ -1,7 +1,9 @@
+import {Meal} from "./Meal";
+
 export interface AppUser {
   email: string;
   password: string;
   roles : String[];
-  cart: any[];
-  favorite: any[];
+  cart: Meal[];
+  favorite: Meal[];
 }

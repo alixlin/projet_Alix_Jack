@@ -18,8 +18,7 @@ export class FavoriteComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.authService.isAuthenticated()) this.router.navigate(['/home']);
-    let appUser: AppUser = JSON.parse(sessionStorage.getItem("authUser")!) as AppUser;
-    this.favoriteList = appUser.favorite;
+    this.favoriteList = this.authService.authenticatedUser!.favorite;
   }
 
   removeFavorite(index: number) {

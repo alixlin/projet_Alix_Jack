@@ -47,8 +47,7 @@ export class CartComponent implements OnInit {
 
   toggleMenu() {
     if (this.authService.isAuthenticated()) {
-      let appUser: AppUser = JSON.parse(sessionStorage.getItem("authUser")!) as AppUser;
-      this.shoppingCart = appUser.cart;
+      this.shoppingCart = this.authService.authenticatedUser!.cart;
       this.price = this.computePrice(this.shoppingCart.length);
       this.isMenuOpen = !this.isMenuOpen;
     } else this.router.navigateByUrl("/login");
@@ -70,25 +69,16 @@ export class CartComponent implements OnInit {
     });
   }
 
-  removeCart(index: number){
-    let appUser: AppUser = JSON.parse(sessionStorage.getItem("authUser")!) as AppUser;
-    appUser.cart.splice(index,1);
-    this.shoppingCart.splice(index,1);
+  removeCart(index: number) {
+    this.shoppingCart.splice(index, 1);
     this.countTest = 1;
     this.price = this.computePrice(this.shoppingCart.length);
-    sessionStorage.setItem("authUser", JSON.stringify({
-      email: appUser.email,
-      roles: appUser.roles,
-      jwt: "JWT_TOKEN",
-      cart: appUser.cart,
-      favorite: appUser.favorite
-    }));
+    this.authService.removeCart(index);
   }
 
   computePrice(nbMeal:number): number {
     let unitCost: number = 5;
     let price: number = nbMeal * unitCost;
-
     let numberOfDiscounts = Math.floor(nbMeal / 10);
     unitCost -= 0.5 * numberOfDiscounts;
     price = nbMeal * unitCost;
