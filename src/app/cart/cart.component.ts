@@ -1,5 +1,9 @@
 import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {animate, style, transition, trigger} from "@angular/animations";
+import {AuthenticationService} from "../service/authentication.service";
+import {Router} from "@angular/router";
+import {AppUser} from "../model/user";
+import {Meal} from "../model/Meal";
 
 @Component({
   selector: 'app-cart',
@@ -33,24 +37,62 @@ export class CartComponent implements OnInit {
   @ViewChild('toggleButton') toggleButton?: ElementRef;
   @ViewChild('menu') menu?: ElementRef;
 
+  public shoppingCart:Meal[] = [];
+
   public isMenuOpen:Boolean = false;
 
+  private compteurTest:number = 0;
+
+  public price:number = 0;
+
   toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen;
+    if (this.authService.isAuthenticated()) {
+      let appUser: AppUser = JSON.parse(sessionStorage.getItem("authUser")!) as AppUser;
+      this.shoppingCart = appUser.cart;
+      this.price = this.computePrice(this.shoppingCart.length);
+      this.isMenuOpen = !this.isMenuOpen;
+    } else this.router.navigateByUrl("/login");
   }
 
-  constructor(private renderer: Renderer2) { }
+  constructor(private renderer: Renderer2, private authService : AuthenticationService, private router: Router) { }
 
   ngOnInit(): void {
     this.renderer.listen('window', 'click', (e: Event) => {
-      console.log(this.menu?.nativeElement);
       if (
-        e.target !== this.toggleButton?.nativeElement &&
-        !this.menu?.nativeElement.contains(e.target)
+        !this.toggleButton?.nativeElement.contains(e.target) &&
+        !this.menu?.nativeElement.contains(e.target) && this.isMenuOpen && this.compteurTest == 0
       ) {
-        this.isMenuOpen = false;
+          this.isMenuOpen = false;
+      }
+      else {
+        this.compteurTest = 0;
       }
     });
+  }
+
+  removeCart(index: number){
+    let appUser: AppUser = JSON.parse(sessionStorage.getItem("authUser")!) as AppUser;
+    appUser.cart.splice(index,1);
+    this.shoppingCart.splice(index,1);
+    this.compteurTest = 1;
+    this.price = this.computePrice(this.shoppingCart.length);
+    sessionStorage.setItem("authUser", JSON.stringify({
+      email: appUser.email,
+      roles: appUser.roles,
+      jwt: "JWT_TOKEN",
+      cart: appUser.cart
+    }));
+  }
+
+  computePrice(nbMeal:number): number {
+    let unitCost: number = 5;
+    let price: number = nbMeal * unitCost;
+
+    let numberOfDiscounts = Math.floor(nbMeal / 10);
+    unitCost -= 0.5 * numberOfDiscounts;
+    price = nbMeal * unitCost;
+    return price;
+
   }
 
 }

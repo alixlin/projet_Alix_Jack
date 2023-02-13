@@ -25,14 +25,14 @@ export class AuthenticationService {
   }
 
   public register(email: string, password: string): Observable<AppUser> {
-    this.users.push({email: email, password: password, roles: ["USER"]});
-    let appUser = {email: email, password: password, roles: ["USER"]};
+    this.users.push({email: email, password: password, roles: ["USER"], cart: []});
+    let appUser = {email: email, password: password, roles: ["USER"], cart: []};
     return of(appUser);
   }
 
   public authenticateUser(appUser: AppUser): Observable<boolean> {
     this.authenticatedUser = appUser;
-    sessionStorage.setItem("authUser", JSON.stringify({email: appUser.email, roles: appUser.roles, jwt: "JWT_TOKEN"}))
+    sessionStorage.setItem("authUser", JSON.stringify({email: appUser.email, roles: appUser.roles, jwt: "JWT_TOKEN", cart: appUser.cart}));
     return of(true);
   }
 
@@ -49,7 +49,16 @@ export class AuthenticationService {
 
   public logout(): Observable<boolean> {
     this.authenticatedUser=undefined;
+    let currentAppUser:AppUser = JSON.parse(sessionStorage.getItem("authUser")!) as AppUser;
+
+    this.users.map(obj => {
+      if (obj.email === currentAppUser.email) {
+        obj.cart = currentAppUser.cart;
+      }
+    });
+
     sessionStorage.removeItem("authUser");
+
     return of(true);
   }
 

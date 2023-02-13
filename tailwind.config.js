@@ -4,6 +4,9 @@ module.exports = {
     "./src/**/*.{html,ts}",
   ],
   theme: {
+    minWidth: {
+      '400': '400px',
+    },
     maxWidth: {
       '1/2': '50%',
     },

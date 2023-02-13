@@ -9,6 +9,8 @@ import {
 } from "rxjs";
 import {Meal} from "../model/Meal";
 import {ActivatedRoute, Params, Router} from "@angular/router";
+import {AppUser} from "../model/user";
+import {AuthenticationService} from "../service/authentication.service";
 
 @Component({
   selector: 'app-home',
@@ -25,6 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               private service: Service,
               private activatedRoute: ActivatedRoute,
               private router: Router,
+              private authService: AuthenticationService,
   ) {
   }
 
@@ -186,5 +189,21 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getCommonElements3(array1: any[], array2: any[]) {
     return array2.filter(object => array1.includes(object.idMeal));  }
+
+  addCard(meal: Meal) {
+    if (this.authService.isAuthenticated()){
+      let appUser: AppUser = JSON.parse(sessionStorage.getItem("authUser")!) as AppUser;
+      appUser.cart.push(meal);
+      return sessionStorage.setItem("authUser", JSON.stringify({
+        email: appUser.email,
+        roles: appUser.roles,
+        jwt: "JWT_TOKEN",
+        cart: appUser.cart
+      }));
+    }
+    else {
+      return this.router.navigateByUrl("/login");
+    }
+  }
 
 }
