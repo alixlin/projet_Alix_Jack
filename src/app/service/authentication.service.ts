@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {AppUser} from "../model/user";
-import {BehaviorSubject, Observable, of, throwError} from "rxjs";
+import {Observable, of, throwError} from "rxjs";
 import {Meal} from "../model/Meal";
 
 @Injectable({
@@ -8,19 +8,19 @@ import {Meal} from "../model/Meal";
 })
 export class AuthenticationService {
 
-  users: AppUser[] = [];
-  authenticatedUser: AppUser | undefined;
-
   constructor() {
     this.users = require('../data/mock-user.data.json');
-    console.log(this.users);
   }
+
+  public authenticatedUser: AppUser | undefined;
+
+  private users: AppUser[] = [];
 
   public login(email: string, password: string): Observable<AppUser> {
     let appUser = this.users.find(value => value.email == email);
-    if (!appUser) return throwError(() => new Error("User not found"));
+    if (!appUser) return throwError(() => new Error("Incorrect user or password"));
     if (appUser.password != password) {
-      return throwError(() => new Error("Bad credentials"));
+      return throwError(() => new Error("Incorrect user or password"));
     }
     return of(appUser);
   }
@@ -35,39 +35,32 @@ export class AuthenticationService {
 
   public authenticateUser(appUser: AppUser): Observable<boolean> {
     this.authenticatedUser = appUser;
-    sessionStorage.setItem("authUser", JSON.stringify({email: appUser.email, roles: appUser.roles, jwt: "JWT_TOKEN", cart: appUser.cart, favorite: appUser.favorite}));
+    sessionStorage.setItem("authUser", JSON.stringify({
+      email: appUser.email,
+      roles: appUser.roles,
+      jwt: "JWT_TOKEN",
+      cart: appUser.cart,
+      favorite: appUser.favorite
+    }));
     return of(true);
-  }
-
-  public hasRole(role: string) : boolean {
-    return this.authenticatedUser!.roles.includes(role);
   }
 
   public isAuthenticated() {
     if (sessionStorage.getItem("authUser")) {
       this.authenticatedUser = JSON.parse(sessionStorage.getItem("authUser")!) as AppUser;
     }
-    return this.authenticatedUser!=undefined;
+    return this.authenticatedUser != undefined;
   }
 
   public logout(): Observable<boolean> {
-    this.authenticatedUser=undefined;
-    let currentAppUser:AppUser = JSON.parse(sessionStorage.getItem("authUser")!) as AppUser;
-
     this.users.map(obj => {
-      if (obj.email === currentAppUser.email) {
-        obj.cart = currentAppUser.cart;
+      if (obj.email === this.authenticatedUser?.email) {
+        obj.cart = this.authenticatedUser.cart;
+        obj.favorite = this.authenticatedUser.favorite;
       }
     });
-
-    this.users.map(obj => {
-      if (obj.email === currentAppUser.email) {
-        obj.favorite = currentAppUser.favorite;
-      }
-    });
-
+    this.authenticatedUser = undefined;
     sessionStorage.removeItem("authUser");
-
     return of(true);
   }
 
@@ -76,7 +69,7 @@ export class AuthenticationService {
   /// Favorite ///
   /////////////////////////////////////////////////////////////////////////
 
-  removeFavorite(index: number) {
+  public removeFavorite(index: number) {
     this.authenticatedUser?.favorite.splice(index, 1);
     sessionStorage.setItem("authUser", JSON.stringify({
       email: this.authenticatedUser?.email,
@@ -87,7 +80,7 @@ export class AuthenticationService {
     }));
   }
 
-  addFavorite(meal: Meal) {
+  public addFavorite(meal: Meal) {
     this.authenticatedUser?.favorite.push(meal);
     return sessionStorage.setItem("authUser", JSON.stringify({
       email: this.authenticatedUser?.email,
@@ -102,8 +95,8 @@ export class AuthenticationService {
   /// Cart ///
   /////////////////////////////////////////////////////////////////////////
 
-  removeCart(index: number){
-    this.authenticatedUser?.cart.splice(index,1);
+  public removeCart(index: number) {
+    this.authenticatedUser?.cart.splice(index, 1);
     sessionStorage.setItem("authUser", JSON.stringify({
       email: this.authenticatedUser?.email,
       roles: this.authenticatedUser?.roles,
@@ -113,7 +106,7 @@ export class AuthenticationService {
     }));
   }
 
-  addCart(meal: Meal) {
+  public addCart(meal: Meal) {
     this.authenticatedUser?.cart.push(meal);
     return sessionStorage.setItem("authUser", JSON.stringify({
       email: this.authenticatedUser?.email,

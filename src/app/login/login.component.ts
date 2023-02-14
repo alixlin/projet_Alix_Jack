@@ -10,8 +10,10 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent implements OnInit {
 
-  public errorMessage: any;
+  constructor(public authService: AuthenticationService, private router: Router) {
+  }
 
+  public errorMessage?: string;
   public userFormGroup: FormGroup = new FormGroup(
     {
       email: new FormControl("", [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
@@ -19,14 +21,10 @@ export class LoginComponent implements OnInit {
     }
   );
 
-
-  constructor(public authService: AuthenticationService, private router: Router) {
-  }
-
   ngOnInit(): void {
   }
 
-  handleLogin() {
+  public handleLogin() {
     let email = this.userFormGroup.value.email;
     let password = this.userFormGroup.value.password;
     this.authService.login(email, password).subscribe(

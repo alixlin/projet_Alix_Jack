@@ -9,7 +9,11 @@ import {Router} from "@angular/router";
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  public errorMessage: any;
+
+  constructor(public authService: AuthenticationService, private router: Router) {
+  }
+
+  public errorMessage?: string;
 
   public registerFormGroup: FormGroup = new FormGroup(
     {
@@ -18,13 +22,10 @@ export class RegisterComponent implements OnInit {
     }
   );
 
-
-  constructor(public authService: AuthenticationService, private router: Router) {
-  }
-
   ngOnInit(): void {
   }
-  handleRegister() {
+
+  public handleRegister() {
     let email = this.registerFormGroup.value.email;
     let password = this.registerFormGroup.value.password;
     this.authService.register(email, password).subscribe(

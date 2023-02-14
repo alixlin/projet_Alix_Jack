@@ -20,7 +20,7 @@
                       (meal.strInstructions | slice:0:150) + '...' : (meal.strInstructions)}}</p>
                   </div>
                   <div class="flex item-center justify-between mt-3">
-                    <button *ngIf="authService.isAuthenticated() && isInFavoriteList(meal.idMeal)"
+                    <button class="focus:outline-0" *ngIf="authService.isAuthenticated() && isInFavoriteList(meal.idMeal)"
                             (click)="removeFavorite(meal.idMeal)">
                       <svg class="fill-orange-400 w-auto h-6 " xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                            viewBox="0 0 24 24">
@@ -28,7 +28,7 @@
                           d="M12 4.248c-3.148-5.402-12-3.825-12 2.944 0 4.661 5.571 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-6.792-8.875-8.306-12-2.944z"/>
                       </svg>
                     </button>
-                    <button *ngIf="!isInFavoriteList(meal.idMeal)" (click)="addFavorite(meal)">
+                    <button class="focus:outline-0" *ngIf="!isInFavoriteList(meal.idMeal)" (click)="addFavorite(meal)">
                       <svg class="fill-white w-auto h-6 stroke-1 stroke-orange-400 hover:fill-orange-400 "
                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path
