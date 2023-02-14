@@ -69,14 +69,6 @@ export class AuthenticationService {
     return of(true);
   }
 
-  public test() {
-    //    this.authenticatedUser = sessionStorage.getItem("authUser");
-    let test = sessionStorage.getItem("authUser")
-    typeof sessionStorage.getItem("authUser")
-    let test2 = JSON.parse(test!) as AppUser;
-    return test2;
-  }
-
 
   /////////////////////////////////////////////////////////////////////////
   /// Favorite ///

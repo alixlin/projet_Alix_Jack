@@ -44,54 +44,6 @@
         <div class="flex mb-6 border-gray-200 border-b-2 pb-5">
           <p class="leading-relaxed text-justify">{{meal?.strInstructions}}</p>
         </div>
-        <div class="flex justify-between">
-          <ng-container *ngIf="authService.isAuthenticated(); else notAuth">
-          <button *ngIf="isInFavoriteList(); else notInFavoriteList" (click)="removeFavorite()"
-                  class=" text-2xl rounded-3xl py-2 px-6 bg-orange-400 font-medium text-white hover:bg-orange-500">
-            <span class="flex items-center">
-              <span class=" mr-2">
-                <svg class="fill-current w-auto h-6" xmlns="http://www.w3.org/2000/svg"
-                     viewBox="0 0 32 32"><path
-                  d="M15.786 29.755h-.001c-.281 0-.537-.111-.724-.292L3.182 17.985a.333.333 0 0 1-.046-.046v-.001a10.145 10.145 0 0 1-2.608-6.55v-.013c0-5.035 3.861-9.13 8.608-9.13a8.154 8.154 0 0 1 6.763 3.699l.019.031c1.463-2.239 3.949-3.705 6.778-3.73h.004c4.695 0 8.347 4.012 8.347 9.13v.1c0 2.467-.888 4.728-2.361 6.479l.013-.015-.068.073L16.486 29.49a1.04 1.04 0 0 1-.696.266h-.003zM4.663 16.535l11.133 10.753L27.175 16.53a8.052 8.052 0 0 0 1.785-5.073v-.086.004c0-3.949-2.749-7.043-6.261-7.043-2.546 0-4.826 1.68-5.807 4.283a1.045 1.045 0 0 1-1.949.007l-.002-.007c-.981-2.603-3.261-4.283-5.807-4.283-3.595 0-6.521 3.162-6.521 7.043a8.176 8.176 0 0 0 2.058 5.168l-.007-.009zm23.263.72z">
-            </path>
-                </svg></span>
-              <p>Remove favorite</p>
-              </span>
-          </button>
-          </ng-container>
-          <ng-template #notInFavoriteList>
-            <button (click)="addFavorite(meal!)"
-                    class=" text-2xl rounded-3xl py-2 px-6 bg-orange-400 font-medium text-white hover:bg-orange-500">
-            <span class="flex items-center">
-              <span class=" mr-2">
-                <svg class="fill-current w-auto h-6" xmlns="http://www.w3.org/2000/svg"
-                     viewBox="0 0 32 32"><path
-                  d="M15.786 29.755h-.001c-.281 0-.537-.111-.724-.292L3.182 17.985a.333.333 0 0 1-.046-.046v-.001a10.145 10.145 0 0 1-2.608-6.55v-.013c0-5.035 3.861-9.13 8.608-9.13a8.154 8.154 0 0 1 6.763 3.699l.019.031c1.463-2.239 3.949-3.705 6.778-3.73h.004c4.695 0 8.347 4.012 8.347 9.13v.1c0 2.467-.888 4.728-2.361 6.479l.013-.015-.068.073L16.486 29.49a1.04 1.04 0 0 1-.696.266h-.003zM4.663 16.535l11.133 10.753L27.175 16.53a8.052 8.052 0 0 0 1.785-5.073v-.086.004c0-3.949-2.749-7.043-6.261-7.043-2.546 0-4.826 1.68-5.807 4.283a1.045 1.045 0 0 1-1.949.007l-.002-.007c-.981-2.603-3.261-4.283-5.807-4.283-3.595 0-6.521 3.162-6.521 7.043a8.176 8.176 0 0 0 2.058 5.168l-.007-.009zm23.263.72z">
-            </path>
-                </svg></span>
-              <p>Add favorite</p>
-              </span>
-            </button>
-          </ng-template>
-          <ng-template #notAuth>
-            <a routerLink="/login" routerLinkActive="active"
-                    class=" text-2xl rounded-3xl py-2 px-6 bg-orange-400 font-medium text-white hover:bg-orange-500 hover:no-underline">
-            <span class="flex items-center">
-              <span class=" mr-2">
-                <svg class="fill-current w-auto h-6" xmlns="http://www.w3.org/2000/svg"
-                     viewBox="0 0 32 32"><path
-                  d="M15.786 29.755h-.001c-.281 0-.537-.111-.724-.292L3.182 17.985a.333.333 0 0 1-.046-.046v-.001a10.145 10.145 0 0 1-2.608-6.55v-.013c0-5.035 3.861-9.13 8.608-9.13a8.154 8.154 0 0 1 6.763 3.699l.019.031c1.463-2.239 3.949-3.705 6.778-3.73h.004c4.695 0 8.347 4.012 8.347 9.13v.1c0 2.467-.888 4.728-2.361 6.479l.013-.015-.068.073L16.486 29.49a1.04 1.04 0 0 1-.696.266h-.003zM4.663 16.535l11.133 10.753L27.175 16.53a8.052 8.052 0 0 0 1.785-5.073v-.086.004c0-3.949-2.749-7.043-6.261-7.043-2.546 0-4.826 1.68-5.807 4.283a1.045 1.045 0 0 1-1.949.007l-.002-.007c-.981-2.603-3.261-4.283-5.807-4.283-3.595 0-6.521 3.162-6.521 7.043a8.176 8.176 0 0 0 2.058 5.168l-.007-.009zm23.263.72z">
-            </path>
-                </svg></span>
-              <p>Add favorites</p>
-              </span>
-            </a>
-          </ng-template>
-          <button (click)="addCart(meal!)"
-            class=" text-2xl rounded-3xl py-2 px-6 bg-orange-400 font-medium text-white hover:bg-orange-500 ">
-            Add to cart
-          </button>
-        </div>
       </div>
     </div>
   </div>

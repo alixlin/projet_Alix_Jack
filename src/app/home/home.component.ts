@@ -23,11 +23,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   public mealsSample: Meal[] = [];
   private mealList: Meal[] = [];
 
+  favoriteList: string[] = [];
+
   constructor(private el: ElementRef,
               private service: Service,
               private activatedRoute: ActivatedRoute,
               private router: Router,
-              private authService: AuthenticationService,
+              public authService: AuthenticationService,
   ) {
   }
 
@@ -36,6 +38,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.favoriteList = this.getIdMeals(this.authService.authenticatedUser?.favorite ?? []);
+
     const divElement = this.el.nativeElement.querySelector('#divDetector');
     const scroll$ = fromEvent(window, 'scroll');
     this.subscription = scroll$.pipe(
@@ -197,6 +201,29 @@ export class HomeComponent implements OnInit, OnDestroy {
     else {
       return this.router.navigateByUrl("/login");
     }
+  }
+
+  addFavorite(meal:Meal) {
+    if (this.authService.isAuthenticated()) {
+      this.authService.addFavorite(meal);
+      this.favoriteList = this.getIdMeals(this.authService.authenticatedUser?.favorite ?? []);
+    } else {
+      this.router.navigateByUrl('/login');
+    }
+}
+
+  getIdMeals(meals: Meal[]): string[] {
+    return meals.map(meal => meal.idMeal);
+  }
+
+  removeFavorite(idMeal: string) {
+    const index = this.favoriteList.indexOf(idMeal);
+    this.authService.removeFavorite(index);
+    this.favoriteList = this.getIdMeals(this.authService.authenticatedUser?.favorite ?? []);
+  }
+
+  isInFavoriteList(idMeal: string): boolean {
+    return this.favoriteList.includes(idMeal ?? "");
   }
 
 }

@@ -1,15 +1,7 @@
-import {
-  Component,
-  ElementRef,
-  OnInit, Renderer2,
-  ViewChild,
-} from '@angular/core';
-import {ActivatedRoute, Params, Router} from "@angular/router";
+import {Component, OnInit,} from '@angular/core';
+import {ActivatedRoute, Params} from "@angular/router";
 import {Service} from "../../DataService/service";
 import {Meal} from "../model/Meal";
-import {trigger, style, animate, transition} from '@angular/animations';
-import {AppUser} from "../model/user";
-import {AuthenticationService} from "../service/authentication.service";
 
 
 @Component({
@@ -20,20 +12,15 @@ import {AuthenticationService} from "../service/authentication.service";
 export class DetailsComponent implements OnInit {
 
   meal?: Meal;
-  ingredientsAndMeasures: any[] = [];
+  ingredientsAndMeasures: string[][] = [];
 
-  favoriteList: string[] = [];
-
-  constructor(private activatedRoute: ActivatedRoute, private service: Service, private renderer: Renderer2, public authService: AuthenticationService, private router:Router) {
+  constructor(private activatedRoute: ActivatedRoute, private service: Service) {
   }
-
   ngOnInit() {
-    this.favoriteList = this.getIdMeals(this.authService.authenticatedUser?.favorite ?? []);
-    this.activatedRoute.params.subscribe(async (params: Params) => {
+    this.activatedRoute.params.subscribe( (params: Params) => {
       this.getMealDetails(params['id']);
     });
   }
-
   getMealDetails(id: string) {
     this.service.fetchMealById(id).subscribe((rslt) => {
       this.meal = rslt.meals[0];
@@ -45,29 +32,4 @@ export class DetailsComponent implements OnInit {
       }
     });
   }
-
-  addFavorite(meal:Meal) {
-    this.authService.addFavorite(meal);
-    this.favoriteList = this.getIdMeals(this.authService.authenticatedUser?.favorite ?? []);
-  }
-
-  addCart(meal:Meal) {
-    this.authService.isAuthenticated() ? this.authService.addCart(meal) : this.router.navigateByUrl('/login');
-  }
-
-  getIdMeals(meals: Meal[]): string[] {
-    return meals.map(meal => meal.idMeal);
-  }
-
-  removeFavorite() {
-    const index = this.favoriteList.indexOf(this.meal?.idMeal!);
-    this.authService.removeFavorite(index);
-    this.favoriteList = this.getIdMeals(this.authService.authenticatedUser?.favorite ?? []);
-  }
-
-  isInFavoriteList(): boolean {
-    return this.favoriteList.includes(this.meal?.idMeal ?? "");
-  }
-
-
 }

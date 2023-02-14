@@ -3,7 +3,6 @@
     <div class="card">
       <div class="card-header">Log in</div>
       <div class="card-body">
-        {{authService.test()}}
         {{userFormGroup.value | json}}
         <div class="text-danger" *ngIf="errorMessage">{{errorMessage}}</div>
         <form [formGroup]="userFormGroup" (ngSubmit)="handleLogin()">
@@ -16,9 +15,7 @@
             <input type="password" formControlName="password" class="form-control">
           </div>
           <button class="btn btn-primary" type="submit">Login</button>
-
         </form>
-
       </div>
     </div>
   </div>
