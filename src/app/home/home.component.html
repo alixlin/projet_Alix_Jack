@@ -1,9 +1,9 @@
 <div>
   <div>
-    <main class="mx-16 px-4">
-      <section class="pt-6 pb-4">
-        <div class="wrapper">
-          <app-side-filter></app-side-filter>
+    <div class="mx-16 px-4">
+      <div class="pt-6 pb-4">
+        <div [ngClass]="{'wrapper': true, 'h-screen': mealsSample.length === 1}">
+        <app-side-filter></app-side-filter>
           <main>
             <app-search-bar></app-search-bar>
             <ng-container *ngIf="mealsSample.length;else notFound;">
@@ -44,12 +44,14 @@
               </div>
             </ng-container>
             <ng-template #notFound>
-              Not found !
+              <div class="h-screen">
+                  Not found ! sorry :(
+              </div>
             </ng-template>
-            <div id="divDetector" class="bg-green-600 w-full h-10"></div>
+            <div id="divDetector" class=" w-full"></div>
           </main>
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
   </div>
 </div>

@@ -11,6 +11,7 @@ import {Meal} from "../model/Meal";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {AppUser} from "../model/user";
 import {AuthenticationService} from "../service/authentication.service";
+import {mealQuery, queryResponse} from "../model/queryResponse";
 
 @Component({
   selector: 'app-home',
@@ -18,12 +19,6 @@ import {AuthenticationService} from "../service/authentication.service";
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-
-  private subscription?: Subscription;
-  public mealsSample: Meal[] = [];
-  private mealList: Meal[] = [];
-
-  favoriteList: string[] = [];
 
   constructor(private el: ElementRef,
               private service: Service,
@@ -33,9 +28,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) {
   }
 
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
-  }
+  public mealsSample: Meal[] = [];
+  private subscription?: Subscription;
+  private mealList: Meal[] = [];
+  private favoriteList: string[] = [];
 
   ngOnInit() {
     this.favoriteList = this.getIdMeals(this.authService.authenticatedUser?.favorite ?? []);
@@ -55,55 +51,44 @@ export class HomeComponent implements OnInit, OnDestroy {
       }),
       filter(isVisible => isVisible)
     ).subscribe(() => {
-      console.log("hello")
       this.getMealSample();
     });
 
-    // Search bar
-    this.activatedRoute.queryParams.subscribe( async (params: Params) => {
+    this.activatedRoute.queryParams.subscribe(async (params: Params) => {
       const defaultMealList = await lastValueFrom(this.service.fetchMealsList());
-      console.log("params");
-      console.log(params);
-      console.log(params['ingredient'])
-      console.log(params['ingredient'] && params['ingredient'].length > 0 ? "oui il existe" : "nn il existe pas");
-      console.log(params['area'] && params['area'] != 'allArea'? "il y a une requete " : "default meals")
-      const areaList = params['area'] && params['area'] != 'allArea'? await lastValueFrom(this.service.fetchAreaByName(params['area'])) : defaultMealList;
-      console.log(areaList.meals);
-      const categoryList = params['category'] && params['category'] != 'allCategory'? await lastValueFrom(this.service.fetchCategoryByName(params['category'])) : defaultMealList;
-      console.log(categoryList.meals);
-      const ingredientList = params['ingredient'] && params['ingredient'].length > 0 ? await lastValueFrom(this.service.fetchIngredientByName(params['ingredient'])) : defaultMealList;
-      const ingredientListError = ingredientList.meals == null ? [] : ingredientList.meals
-      console.log(ingredientList.meals);
-      const searchList = params['mealName'] && params['mealName'].trim().length > 0 ? await lastValueFrom(this.service.fetchMealsListBy(params['mealName'])) : defaultMealList;
-      console.log(searchList);
-      console.log(searchList.meals);
-      const searchListError = searchList.meals == null ? [] : searchList.meals
 
-      const interAreaAndCategory: string[] = this.getCommonElements(areaList.meals,categoryList.meals);
-      const interIngredientAndSearch: string[] = this.getCommonElements(ingredientListError,searchListError);
-      const interQuery: string[] = this.getCommonElements2(interAreaAndCategory,interIngredientAndSearch);
-      console.log(interAreaAndCategory);
-      console.log(interIngredientAndSearch);
-      console.log(interQuery);
-      console.log(this.getCommonElements3(interQuery,defaultMealList.meals))
-      const finalQuery = this.getCommonElements3(interQuery,defaultMealList.meals);
+      const areaList:queryResponse = params['area'] && params['area'] != 'allArea' ? await lastValueFrom(this.service.fetchAreaByName(params['area'])) : defaultMealList;
+      const areaIdList:string[] = this.getIdMeals2(areaList.meals);
+
+      const categoryList:queryResponse = params['category'] && params['category'] != 'allCategory' ? await lastValueFrom(this.service.fetchCategoryByName(params['category'])) : defaultMealList;
+      const categoryIdList:string[] = this.getIdMeals2(categoryList.meals);
+
+      const searchName:string = params['mealName']?.trim();
+      const searchList:queryResponse = searchName ? await lastValueFrom(this.service.fetchMealsListBy(searchName)) : defaultMealList;
+      const searchIdList:string[] = this.getIdMeals2(searchList.meals || []);
+
+      let ingredientName:string[] = [];
+      if (params['ingredient'] && params['ingredient'].length > 0) {
+        if (Array.isArray(params['ingredient'])){
+          ingredientName = params['ingredient'];
+        } else {
+          ingredientName[0] = params['ingredient'];
+        }
+      }
+      const ingredientIdList:string[] = ingredientName.length>0 ? await this.getIdIngredient(ingredientName) : this.getIdMeals2(defaultMealList.meals);
+
+      const interQuery:string[] = this.intersection(this.intersection(areaIdList,categoryIdList),this.intersection(ingredientIdList,searchIdList));
+      const finalQuery:Meal[] = this.getCommonElements3(interQuery, defaultMealList.meals);
       this.mealList = finalQuery;
       this.mealsSample = [];
       this.getMealSample();
-
-/*
-      if (params['mealName'] && params['mealName'].trim().length > 0) {
-        console.log("Il y a une query");
-        this.searchMeal(params['mealName']);
-      } else {
-        console.log("Il y n'y a pas de query");
-        this.getMealList();
-      }
-    */
     });
 
 
+  }
 
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 
   getMealList() {
@@ -144,13 +129,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
-  searchIDK(mealname: string, areaName: string, categoryName: string) {
-  }
-
-  async test() {
-    return await lastValueFrom(this.service.fetchCategoryList());
-  }
-
   getMealSample() {
     if (this.mealsSample.length != this.mealList.length) {
       console.log("jai attribué mes données");
@@ -160,27 +138,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  /*  getAlbumData(fetchData: boolean) {
-      if (fetchData) {
-        this.service.fetchMeal(this.meals.length,this.meals.length+10).subscribe({
-            next: (response) => {
-              this.meals = this.meals.concat(response);
-              console.log(this.meals);
-            },
-            error: (err) => {
-              console.log(err);
-            }
-        }
-        )
-      }
-    }*/
-
-  openMealDetails(id: string): void {
+  public openMealDetails(id: string): void {
     this.router.navigate(['details', id]);
   }
 
   getCommonElements(array1: any[], array2: any[]) {
-    return array1.filter(element1 => array2.some(({strMeal,strMealThumb,idMeal}) => element1.idMeal === idMeal && element1.strMeal === strMeal && element1.strMealThumb===strMealThumb)).map(element => element.idMeal);
+    return array1.filter(element1 => array2.some(({
+                                                    strMeal,
+                                                    strMealThumb,
+                                                    idMeal
+                                                  }) => element1.idMeal === idMeal && element1.strMeal === strMeal && element1.strMealThumb === strMealThumb)).map(element => element.idMeal);
   }
 
   getCommonElements2(array1: string[], array2: string[]) {
@@ -192,27 +159,31 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getCommonElements3(array1: any[], array2: any[]) {
-    return array2.filter(object => array1.includes(object.idMeal));  }
+    return array2.filter(object => array1.includes(object.idMeal));
+  }
 
   addCart(meal: Meal) {
-    if (this.authService.isAuthenticated()){
+    if (this.authService.isAuthenticated()) {
       return this.authService.addCart(meal);
-    }
-    else {
+    } else {
       return this.router.navigateByUrl("/login");
     }
   }
 
-  addFavorite(meal:Meal) {
+  addFavorite(meal: Meal) {
     if (this.authService.isAuthenticated()) {
       this.authService.addFavorite(meal);
       this.favoriteList = this.getIdMeals(this.authService.authenticatedUser?.favorite ?? []);
     } else {
       this.router.navigateByUrl('/login');
     }
-}
+  }
 
   getIdMeals(meals: Meal[]): string[] {
+    return meals.map(meal => meal.idMeal);
+  }
+
+  getIdMeals2(meals: mealQuery[]): string[] {
     return meals.map(meal => meal.idMeal);
   }
 
@@ -224,6 +195,36 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   isInFavoriteList(idMeal: string): boolean {
     return this.favoriteList.includes(idMeal ?? "");
+  }
+
+  areArraysEqual(array1: any[], array2: any[]): boolean {
+    if (array1.length !== array2.length) {
+      return false;
+    }
+
+    for (let i = 0; i < array1.length; i++) {
+      if (array1[i] !== array2[i]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  async getIdIngredient(ingredientNameList: string[]){
+    const firstQuery:queryResponse = await lastValueFrom(this.service.fetchIngredientByName(ingredientNameList[0]));
+    let ingredientIdList:string[] = this.getIdMeals2(firstQuery.meals);
+    for (let i = 0; i < ingredientNameList.length - 1; i++) {
+      const otherQuery:queryResponse = await lastValueFrom(this.service.fetchIngredientByName(ingredientNameList[i+1]));
+      const otherIngredientIdList:string[] = this.getIdMeals2(otherQuery.meals);
+      ingredientIdList = this.intersection(ingredientIdList,otherIngredientIdList);
+    }
+    return ingredientIdList;
+
+  }
+
+  intersection(array1: string[], array2: string[]): string[] {
+    return array1.filter(value => array2.includes(value));
   }
 
 }
