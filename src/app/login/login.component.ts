@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthenticationService} from "../service/authentication.service";
 import {Router} from "@angular/router";
-import {data} from "autoprefixer";
 
 @Component({
   selector: 'app-login',
