@@ -190,9 +190,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   getCommonElements3(array1: any[], array2: any[]) {
     return array2.filter(object => array1.includes(object.idMeal));  }
 
-  addCard(meal: Meal) {
+  addCart(meal: Meal) {
     if (this.authService.isAuthenticated()){
-      return this.authService.addCard(meal);
+      return this.authService.addCart(meal);
     }
     else {
       return this.router.navigateByUrl("/login");

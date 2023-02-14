@@ -119,7 +119,7 @@ export class AuthenticationService {
     }));
   }
 
-  addCard(meal: Meal) {
+  addCart(meal: Meal) {
     this.authenticatedUser?.cart.push(meal);
     return sessionStorage.setItem("authUser", JSON.stringify({
       email: this.authenticatedUser?.email,
