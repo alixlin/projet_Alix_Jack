@@ -26,6 +26,8 @@ export class AuthenticationService {
   }
 
   public register(email: string, password: string): Observable<AppUser> {
+    let isUser = this.users.find(value => value.email == email);
+    if (isUser) return throwError(() => new Error("User already exist"));
     this.users.push({email: email, password: password, roles: ["USER"], cart: [], favorite: []});
     let appUser = {email: email, password: password, roles: ["USER"], cart: [], favorite: []};
     return of(appUser);

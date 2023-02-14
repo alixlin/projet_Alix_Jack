@@ -9,11 +9,12 @@ import {Router} from "@angular/router";
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+  public errorMessage: any;
 
   public registerFormGroup: FormGroup = new FormGroup(
     {
       email: new FormControl("", [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
-      password: new FormControl("", Validators.required)
+      password: new FormControl("", Validators.required),
     }
   );
 
@@ -36,6 +37,9 @@ export class RegisterComponent implements OnInit {
               }
             }
           )
+        },
+        error: (err) => {
+          this.errorMessage = err;
         }
       }
     )
