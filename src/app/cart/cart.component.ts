@@ -2,7 +2,6 @@ import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core
 import {animate, style, transition, trigger} from "@angular/animations";
 import {AuthenticationService} from "../service/authentication.service";
 import {Router} from "@angular/router";
-import {AppUser} from "../model/user";
 import {Meal} from "../model/Meal";
 
 @Component({
@@ -37,23 +36,14 @@ export class CartComponent implements OnInit {
   @ViewChild('toggleButton') toggleButton?: ElementRef;
   @ViewChild('menu') menu?: ElementRef;
 
-  public shoppingCart:Meal[] = [];
-
-  public isMenuOpen:Boolean = false;
-
-  private countTest:number = 0;
-
-  public price:number = 0;
-
-  toggleMenu() {
-    if (this.authService.isAuthenticated()) {
-      this.shoppingCart = this.authService.authenticatedUser!.cart;
-      this.price = this.computePrice(this.shoppingCart.length);
-      this.isMenuOpen = !this.isMenuOpen;
-    } else this.router.navigateByUrl("/login");
+  constructor(private renderer: Renderer2, private authService: AuthenticationService, private router: Router) {
   }
 
-  constructor(private renderer: Renderer2, private authService : AuthenticationService, private router: Router) { }
+  public shoppingCart: Meal[] = [];
+  public isMenuOpen: Boolean = false;
+  public price: number = 0;
+  private countTest: number = 0;
+
 
   ngOnInit(): void {
     this.renderer.listen('window', 'click', (e: Event) => {
@@ -61,29 +51,36 @@ export class CartComponent implements OnInit {
         !this.toggleButton?.nativeElement.contains(e.target) &&
         !this.menu?.nativeElement.contains(e.target) && this.isMenuOpen && this.countTest == 0
       ) {
-          this.isMenuOpen = false;
-      }
-      else {
+        this.isMenuOpen = false;
+      } else {
         this.countTest = 0;
       }
     });
   }
 
-  removeCart(index: number) {
+  public toggleMenu() {
+    if (this.authService.isAuthenticated()) {
+      this.shoppingCart = this.authService.authenticatedUser!.cart;
+      this.price = this.computePrice(this.shoppingCart.length);
+      this.isMenuOpen = !this.isMenuOpen;
+    } else this.router.navigateByUrl("/login");
+  }
+
+  public removeCart(index: number) {
     this.shoppingCart.splice(index, 1);
     this.countTest = 1;
     this.price = this.computePrice(this.shoppingCart.length);
     this.authService.removeCart(index);
   }
 
-  computePrice(nbMeal:number): number {
+  private computePrice(nbMeal: number): number {
     let unitCost: number = 5;
-    let price: number = nbMeal * unitCost;
+    let price: number;
     let numberOfDiscounts = Math.floor(nbMeal / 10);
+    numberOfDiscounts = Math.min(numberOfDiscounts, 3);
     unitCost -= 0.5 * numberOfDiscounts;
     price = nbMeal * unitCost;
     return price;
-
   }
 
 }

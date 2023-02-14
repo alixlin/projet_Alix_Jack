@@ -1,7 +1,7 @@
 <div [@enterLeaveBackground] *ngIf="isMenuOpen" class="fixed inset-0 bg-black bg-opacity-60 transition-opacity"></div>
 <button #toggleButton (click)="toggleMenu()"
         class="w-3/4 focus:outline-0 mb-4 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-orange-400 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-orange-500 hover:no-underline">
-      <h1>Cart</h1>
+  <h1>Cart</h1>
 </button>
 
 <div [@enterLeaveTrigger] #menu *ngIf="isMenuOpen" class="fixed inset-y-0 right-0 flex max-w-full">
@@ -41,7 +41,8 @@
                   <div class="flex flex-1 items-end justify-between text-sm">
                     <p></p>
                     <div class="flex">
-                      <button (click)="removeCart(i)" type="button" class="font-medium text-orange-400 hover:text-orange-500">Remove
+                      <button (click)="removeCart(i)" type="button"
+                              class="font-medium text-orange-400 hover:text-orange-500">Remove
                       </button>
                     </div>
                   </div>

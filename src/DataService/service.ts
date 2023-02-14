@@ -60,7 +60,4 @@ export class Service {
     return this.http.get<any>('https://www.themealdb.com/api/json/v1/1/filter.php?i=' + name);
   }
 
-  public async test(name?:string) {
-    return this.http.get<any>('https://www.themealdb.com/api/json/v1/1/filter.php?c=' + name);
-  }
 }
