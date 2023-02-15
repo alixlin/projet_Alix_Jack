@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Category} from "../model/Category";
 import {Service} from "../../DataService/service";
 import {Ingredient} from "../model/Ingredient";
@@ -6,6 +6,7 @@ import {Area} from "../model/Area";
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {debounceTime, distinctUntilChanged, lastValueFrom} from "rxjs";
 import {ActivatedRoute, Params, Router} from "@angular/router";
+
 @Component({
   selector: 'app-side-filter',
   templateUrl: './side-filter.component.html',
@@ -13,7 +14,10 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 })
 export class SideFilterComponent implements OnInit {
 
-  public categories:Category[] = [];
+  constructor(private service: Service, private router: Router, private activatedRoute: ActivatedRoute,) {
+  }
+
+  public categories: Category[] = [];
   public areas: Area[] = [];
   public categoryForm: FormGroup = new FormGroup({
     category: new FormControl('allCategory'),
@@ -26,10 +30,7 @@ export class SideFilterComponent implements OnInit {
     ingredients: new FormArray([]),
   });
 
-  constructor(private service: Service, private router: Router, private activatedRoute: ActivatedRoute,) {
-  }
-
-   async ngOnInit() {
+  async ngOnInit() {
     this.getCategoryList();
     this.getAreaList();
     this.watchCategoryForm();
@@ -38,23 +39,13 @@ export class SideFilterComponent implements OnInit {
     this.bindValues();
     this.watchIngredientForm();
 
-     this.activatedRoute.queryParams.subscribe( (params: Params) => {
-       if (params['category']) this.categoryForm.get('category')?.setValue(params['category']);
-       if (params['area']) this.areaForm.get('area')?.setValue(params['area']);
-       if (params['ingredient'] && params['ingredient'].length > 0) {
-         const formGroupArray = this.ingredientForm.get('ingredients') as FormGroup
-         let paramIngredient: string[] = [];
-         typeof params['ingredient'] === 'string' ? paramIngredient[0]=params['ingredient'] : paramIngredient = params['ingredient'] as Array<string>;
-         const a = formGroupArray.controls as unknown as any[];
-         for (let i = 0; i < paramIngredient.length; i++) {
-           const c = a.filter(function (formGroup: FormGroup) {
-               return formGroup.get('strIngredient')?.value == paramIngredient[i];
-             }
-           )
-           c[0].get('checked').setValue(true)
-         }
-       }
-       });
+    this.activatedRoute.queryParams.subscribe((params: Params) => {
+      if (params['category']) this.categoryForm.get('category')?.setValue(params['category']);
+      if (params['area']) this.areaForm.get('area')?.setValue(params['area']);
+      if (params['ingredient'] && params['ingredient'].length > 0) {
+        this.updateIngredientFromGroup(params['ingredient']);
+      }
+    });
   }
 
   private getCategoryList() {
@@ -63,7 +54,7 @@ export class SideFilterComponent implements OnInit {
     });
   }
 
-  private getAreaList(){
+  private getAreaList() {
     this.service.fetchAreaList().subscribe((rslt) => {
       this.areas = rslt;
     });
@@ -87,9 +78,8 @@ export class SideFilterComponent implements OnInit {
         debounceTime(500),
         distinctUntilChanged(),
       )
-      .subscribe((v) =>
-        {
-          this.router.navigate(['home'],{queryParams: { category: v },queryParamsHandling: 'merge'});
+      .subscribe((v) => {
+          this.router.navigate(['home'], {queryParams: {category: v}, queryParamsHandling: 'merge'});
         }
       );
   }
@@ -100,9 +90,8 @@ export class SideFilterComponent implements OnInit {
         debounceTime(500),
         distinctUntilChanged(),
       )
-      .subscribe((v) =>
-        {
-          this.router.navigate(['home'],{queryParams: { area: v },queryParamsHandling: 'merge'});
+      .subscribe((v) => {
+          this.router.navigate(['home'], {queryParams: {area: v}, queryParamsHandling: 'merge'});
         }
       );
   }
@@ -113,15 +102,31 @@ export class SideFilterComponent implements OnInit {
         debounceTime(1000),
         distinctUntilChanged(),
       )
-      .subscribe((v) =>
-        {
-          const c = v.filter((f: Ingredient) => f.checked) || [];
-          let b:string[] = [];
-          c.forEach(function (value: Ingredient){
-            b.push(value.strIngredient);
+      .subscribe((ingredientArray: Ingredient[]) => {
+          const checkedIngredient: Ingredient[] = ingredientArray.filter((f: Ingredient) => f.checked) || [];
+          let checkedIngredientName: string[] = [];
+          checkedIngredient.forEach(function (value: Ingredient) {
+            checkedIngredientName.push(value.strIngredient);
           })
-          this.router.navigate(['home'],{queryParams: { ingredient: b },queryParamsHandling: 'merge'});
+          this.router.navigate(['home'], {
+            queryParams: {ingredient: checkedIngredientName},
+            queryParamsHandling: 'merge'
+          });
         }
       );
+  }
+
+  private updateIngredientFromGroup(param: any) {
+    const formGroupArray = this.ingredientForm.get('ingredients') as FormGroup
+    let ingredientName: string[] = [];
+    typeof param === 'string' ? ingredientName[0] = param : ingredientName = param as Array<string>;
+    const ingredientFormGroupArray = formGroupArray.controls as unknown as any[];
+    for (let i = 0; i < ingredientName.length; i++) {
+      const ingredientFormGroup = ingredientFormGroupArray.filter(function (formGroup: FormGroup) {
+          return formGroup.get('strIngredient')?.value == ingredientName[i];
+        }
+      )
+      ingredientFormGroup[0].get('checked').setValue(true);
+    }
   }
 }

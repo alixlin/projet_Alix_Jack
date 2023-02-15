@@ -68,11 +68,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       let ingredientName: string[] = [];
       if (params['ingredient'] && params['ingredient'].length > 0) {
-        if (Array.isArray(params['ingredient'])) {
-          ingredientName = params['ingredient'];
-        } else {
-          ingredientName[0] = params['ingredient'];
-        }
+        Array.isArray(params['ingredient']) ? ingredientName = params['ingredient'] : ingredientName[0] = params['ingredient'];
       }
       const ingredientIdList: string[] = ingredientName.length > 0 ? await this.getIdIngredient(ingredientName) : this.getIdMeals2(defaultMealList.meals);
 
