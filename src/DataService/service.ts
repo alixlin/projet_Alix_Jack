@@ -1,7 +1,5 @@
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Injectable} from "@angular/core";
-import {lastValueFrom, map} from "rxjs";
-import {Meal} from "../app/model/Meal";
 import {AppUser} from "../app/model/user";
 
 @Injectable({
@@ -10,10 +8,6 @@ import {AppUser} from "../app/model/user";
 export class Service {
   constructor(private http: HttpClient) {
   }
-
-  /*  public getConfig() {
-      return this.http.get<Test>('/toto');
-    }*/
 
   public getUsersList() {
     return this.http.get<AppUser[]>('/usersList');

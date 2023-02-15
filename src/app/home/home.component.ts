@@ -35,48 +35,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.favoriteList = this.getIdMeals(this.authService.authenticatedUser?.favorite ?? []);
 
-    const divElement = this.el.nativeElement.querySelector('#divDetector');
-    const scroll$ = fromEvent(window, 'scroll');
-    this.subscription = scroll$.pipe(
-      map(() => divElement.getBoundingClientRect()),
-      switchMap(rect => {
-        if (rect.top >= 0 && rect.left >= 0 &&
-          rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-          rect.right <= (window.innerWidth || document.documentElement.clientWidth)) {
-          return of(true);
-        } else {
-          return of(false);
-        }
-      }),
-      filter(isVisible => isVisible)
-    ).subscribe(() => {
-      this.getMealSample();
-    });
+    this.onScrollLoadSample();
 
     this.activatedRoute.queryParams.subscribe(async (params: Params) => {
-      const defaultMealList = await lastValueFrom(this.service.fetchMealsList());
-
-      const areaList: queryResponse = params['area'] && params['area'] != 'allArea' ? await lastValueFrom(this.service.fetchAreaByName(params['area'])) : defaultMealList;
-      const areaIdList: string[] = this.getIdMeals2(areaList.meals);
-
-      const categoryList: queryResponse = params['category'] && params['category'] != 'allCategory' ? await lastValueFrom(this.service.fetchCategoryByName(params['category'])) : defaultMealList;
-      const categoryIdList: string[] = this.getIdMeals2(categoryList.meals);
-
-      const searchName: string = params['mealName']?.trim();
-      const searchList: queryResponse = searchName ? await lastValueFrom(this.service.fetchMealsListBy(searchName)) : defaultMealList;
-      const searchIdList: string[] = this.getIdMeals2(searchList.meals || []);
-
-      let ingredientName: string[] = [];
-      if (params['ingredient'] && params['ingredient'].length > 0) {
-        Array.isArray(params['ingredient']) ? ingredientName = params['ingredient'] : ingredientName[0] = params['ingredient'];
-      }
-      const ingredientIdList: string[] = ingredientName.length > 0 ? await this.getIdIngredient(ingredientName) : this.getIdMeals2(defaultMealList.meals);
-
-      const interQuery: string[] = this.intersection(this.intersection(areaIdList, categoryIdList), this.intersection(ingredientIdList, searchIdList));
-      const finalQuery: Meal[] = this.getCommonElements3(interQuery, defaultMealList.meals);
-      this.mealList = finalQuery;
-      this.mealsSample = [];
-      this.getMealSample();
+      await this.getFilteredMealList(params['area'], params['category'], params['mealName'], params['ingredient'])
     });
 
 
@@ -148,6 +110,52 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private intersection(array1: string[], array2: string[]): string[] {
     return array1.filter(value => array2.includes(value));
+  }
+
+  private onScrollLoadSample() {
+    const divElement = this.el.nativeElement.querySelector('#divDetector');
+    const scroll$ = fromEvent(window, 'scroll');
+    this.subscription = scroll$.pipe(
+      map(() => divElement.getBoundingClientRect()),
+      switchMap(rect => {
+        if (rect.top >= 0 && rect.left >= 0 &&
+          rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+          rect.right <= (window.innerWidth || document.documentElement.clientWidth)) {
+          return of(true);
+        } else {
+          return of(false);
+        }
+      }),
+      filter(isVisible => isVisible)
+    ).subscribe(() => {
+      this.getMealSample();
+    });
+  }
+
+  private async getFilteredMealList(paramArea: string, paramCategory: string, paramMealName: string, paramIngredient: any) {
+    const defaultMealList = await lastValueFrom(this.service.fetchMealsList());
+
+    const areaList: queryResponse = paramArea && paramArea != 'allArea' ? await lastValueFrom(this.service.fetchAreaByName(paramArea)) : defaultMealList;
+    const areaIdList: string[] = this.getIdMeals2(areaList.meals);
+
+    const categoryList: queryResponse = paramCategory && paramCategory != 'allCategory' ? await lastValueFrom(this.service.fetchCategoryByName(paramCategory)) : defaultMealList;
+    const categoryIdList: string[] = this.getIdMeals2(categoryList.meals);
+
+    const searchName: string = paramMealName?.trim();
+    const searchList: queryResponse = searchName ? await lastValueFrom(this.service.fetchMealsListBy(searchName)) : defaultMealList;
+    const searchIdList: string[] = this.getIdMeals2(searchList.meals || []);
+
+    let ingredientName: string[] = [];
+    if (paramIngredient && paramIngredient.length > 0) {
+      Array.isArray(paramIngredient) ? ingredientName = paramIngredient : ingredientName[0] = paramIngredient;
+    }
+    const ingredientIdList: string[] = ingredientName.length > 0 ? await this.getIdIngredient(ingredientName) : this.getIdMeals2(defaultMealList.meals);
+
+    const interQuery: string[] = this.intersection(this.intersection(areaIdList, categoryIdList), this.intersection(ingredientIdList, searchIdList));
+    const finalQuery: Meal[] = this.getCommonElements3(interQuery, defaultMealList.meals);
+    this.mealList = finalQuery;
+    this.mealsSample = [];
+    this.getMealSample();
   }
 
 }
