@@ -76,7 +76,7 @@ export class CartComponent implements OnInit {
   private computePrice(nbMeal: number): number {
     let unitCost: number = 5;
     let price: number;
-    let numberOfDiscounts = Math.floor(nbMeal / 10);
+    let numberOfDiscounts:number = Math.floor(nbMeal / 10);
     numberOfDiscounts = Math.min(numberOfDiscounts, 3);
     unitCost -= 0.5 * numberOfDiscounts;
     price = nbMeal * unitCost;

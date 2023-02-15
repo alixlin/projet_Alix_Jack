@@ -2,14 +2,15 @@ import {Injectable} from '@angular/core';
 import {AppUser} from "../model/user";
 import {Observable, of, throwError} from "rxjs";
 import {Meal} from "../model/Meal";
+import {Service} from "../../DataService/service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  constructor() {
-    this.users = require('../data/mock-user.data.json');
+  constructor(private service:Service) {
+    this.service.getUsersList().subscribe( value => this.users = value);
   }
 
   public authenticatedUser: AppUser | undefined;

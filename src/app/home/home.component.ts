@@ -11,6 +11,7 @@ import {Meal} from "../model/Meal";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {AuthenticationService} from "../service/authentication.service";
 import {mealQuery, queryResponse} from "../model/queryResponse";
+import {MealResponse} from "../model/mealResponse";
 
 @Component({
   selector: 'app-home',
@@ -132,8 +133,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  private async getFilteredMealList(paramArea: string, paramCategory: string, paramMealName: string, paramIngredient: any) {
-    const defaultMealList = await lastValueFrom(this.service.fetchMealsList());
+  private async getFilteredMealList(paramArea: string, paramCategory: string, paramMealName: string, paramIngredient: string | string[]) {
+    const defaultMealList:MealResponse = await lastValueFrom(this.service.fetchMealsList());
 
     const areaList: queryResponse = paramArea && paramArea != 'allArea' ? await lastValueFrom(this.service.fetchAreaByName(paramArea)) : defaultMealList;
     const areaIdList: string[] = this.getIdMeals2(areaList.meals);

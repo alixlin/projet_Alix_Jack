@@ -14,7 +14,6 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [AuthenticationGuard]},
   {path: 'register', component: RegisterComponent, canActivate: [AuthenticationGuard]},
   {path: 'favorite', component: FavoriteComponent},
-  // {path: 'home/search/:mealName', component: HomeComponent} ne sert à rien ?
   {path: 'home/search/:mealName', component: HomeComponent},
   {path: '404', component: Error404Component},
   {path: '', redirectTo: '/home', pathMatch: 'full'},

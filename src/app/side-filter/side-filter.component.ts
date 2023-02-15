@@ -116,7 +116,7 @@ export class SideFilterComponent implements OnInit {
       );
   }
 
-  private updateIngredientFromGroup(param: any) {
+  private updateIngredientFromGroup(param: string | string[]) {
     const formGroupArray = this.ingredientForm.get('ingredients') as FormGroup
     let ingredientName: string[] = [];
     typeof param === 'string' ? ingredientName[0] = param : ingredientName = param as Array<string>;
